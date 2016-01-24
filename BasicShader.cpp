@@ -21,7 +21,7 @@ BasicShader::~BasicShader()
 void BasicShader::UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix)
 {
 	if (material->UseTexture)
-		material->GetTexture()->Bind();
+		material->GetTexture()->Bind(0);
 
 	SetUniformMatrix("transform", projectionMatrix);
 	SetUniformVector("color", material->Color);

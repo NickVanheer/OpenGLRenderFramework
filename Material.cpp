@@ -41,6 +41,15 @@ Material::~Material()
 	delete Textuur;
 }
 
+void Material::SetSpecularMap(Texture * texture)
+{
+	this->SpecularMapTexture = texture;
+	if (SpecularMapTexture == nullptr)
+		UseSpecularMap = false;
+	else
+		UseSpecularMap = true;
+}
+
 void Material::SetTexture(Texture * texture)
 {
 	this->Textuur = texture;
@@ -53,4 +62,9 @@ void Material::SetTexture(Texture * texture)
 Texture * Material::GetTexture()
 {
 	return Textuur;
+}
+
+Texture * Material::GetSpecularTexture()
+{
+	return SpecularMapTexture;
 }

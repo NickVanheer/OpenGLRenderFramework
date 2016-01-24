@@ -14,9 +14,8 @@ Texture::~Texture()
 		delete[] this->data;
 }
 
-void Texture::Bind()
+void Texture::Bind(int slot)
 {
-	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -26,7 +25,7 @@ void Texture::Bind()
 
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, slot);
 }
 
 void Texture::SetData(unsigned char * data, unsigned int width, unsigned int height)
@@ -38,7 +37,7 @@ void Texture::SetData(unsigned char * data, unsigned int width, unsigned int hei
 
 void Texture::SendTextureToOpenGL()
 {
-	Bind();
+	//Bind(0);
 }
 
 

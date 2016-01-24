@@ -12,5 +12,13 @@ public:
 	static DirectionalLight LightDirectional;
 	void SetUniform(string uniformName, BaseLight baseLight);
 	void SetUniform(string uniformName, DirectionalLight directionalLight);
+	void SetUniform(string uniformName, PointLight pointLight);
+
+	static const int MAX_POINT_LIGHTS = 4;
+	static std::vector<PointLight> PointLights;
+	static void SetPointLights(std::vector<PointLight> pointLights);
+
+	int diffuseTextureUnit;
+	int specTextureUnit;
 };
 

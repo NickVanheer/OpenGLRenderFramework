@@ -31,5 +31,10 @@ private:
 	Material* material;
 
 
+	//floor
+	Mesh* meshFloor;
+	Shader* shaderFloor;
+	Transform transformFloor;
+	Material* materialFloor;
 };
 

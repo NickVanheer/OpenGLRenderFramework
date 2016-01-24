@@ -20,6 +20,11 @@ struct tridata {
 	int	n[3];  // indices to normal list
 };
 
+struct GameContext
+{
+	float deltaTime;
+};
+
 
 #pragma region helpers
 

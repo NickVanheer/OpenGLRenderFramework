@@ -10,14 +10,19 @@ public:
 	virtual ~Material();
 	Vector3 Color;
 
+
+	void SetSpecularMap(Texture* texture);
 	void SetTexture(Texture* texture);
 	Texture* GetTexture();
+	Texture* GetSpecularTexture();
 	float SpecularIntensity; //intensity
 	float SpecularPower; //spread of specular
 
 	bool UseTexture;
+	bool UseSpecularMap;
 private:
 	Texture* Textuur;
+	Texture* SpecularMapTexture;
 
 };
 

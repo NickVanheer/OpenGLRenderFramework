@@ -15,3 +15,13 @@
 #include "Main.h"
 #include "InputManager.h"
 #include "Time.h"
+
+template<class T>
+inline void SafeDelete(T &pObjectToDelete)
+{
+	if (pObjectToDelete != 0)
+	{
+		delete(pObjectToDelete);
+		pObjectToDelete = 0;
+	}
+}

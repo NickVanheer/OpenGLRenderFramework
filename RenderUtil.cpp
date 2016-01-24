@@ -23,15 +23,17 @@ void RenderUtil::ClearScreen()
 void RenderUtil::InitGraphics()
 {
 	//return;
-	glClearColor(0.01f, 0.01f, 0.01f, 1.f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 	
 	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	
+
+	glEnable(GL_DEPTH_CLAMP);
+
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_FRAMEBUFFER_SRGB);
+	//glEnable(GL_FRAMEBUFFER_SRGB);
 }
 
 //TODO::fix

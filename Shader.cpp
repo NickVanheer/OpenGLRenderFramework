@@ -57,7 +57,7 @@ void Shader::CompileShader()
 	glValidateProgram(gProgramID);
 }
 
-void Shader::AddUniform(string uniform)
+int Shader::AddUniform(string uniform)
 {
 	int uniformLocation = glGetUniformLocation(gProgramID, uniform.c_str());
 	
@@ -66,6 +66,8 @@ void Shader::AddUniform(string uniform)
 
 	std::pair<string, int> newUniform(uniform, uniformLocation);
 	uniforms.insert(newUniform);
+
+	return uniformLocation;
 
 }
 

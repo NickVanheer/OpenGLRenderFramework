@@ -4,6 +4,29 @@
 #include <vector>
 #include "Vertex.h"
 
+
+struct Attenuation
+{
+	float constant;
+	float linear;
+	float exponent;
+	
+
+	Attenuation()
+	{
+
+	}
+
+	Attenuation(float constant, float linear, float exponent)
+	{
+		this->constant = constant;
+		this->linear = linear;
+		this->exponent = exponent;
+	}
+};
+
+
+
 struct BaseLight
 {
 	Vector3 color;
@@ -35,6 +58,27 @@ struct DirectionalLight
 	{
 		this->base = base;
 		this->direction = direction.normalized();
+	}
+};
+
+struct PointLight
+{
+	BaseLight base;
+	Attenuation attenuation;
+	Vector3 position;
+	float range;
+
+	PointLight()
+	{
+
+	}
+
+	PointLight(BaseLight base, Attenuation attenuation, Vector3 pos, float range)
+	{
+		this->base = base;
+		this->attenuation = attenuation;
+		this->position = pos;
+		this->range = range;
 	}
 };
 

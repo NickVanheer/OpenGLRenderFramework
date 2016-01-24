@@ -79,7 +79,7 @@ Mesh * ResourceLoader::LoadModel(string filename)
 	int normal_index = 0;
 
 	if (!file)
-		std::cout << "Can't open file";
+		std::cout << "Can't open file " << filename;
 	else
 	{
 		std::string sLine;

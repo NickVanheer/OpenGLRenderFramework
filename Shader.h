@@ -16,7 +16,7 @@ public:
 	void AddFragmentShader(string text);
 	void AddGeometryShader(string text);
 	void CompileShader();
-	void AddUniform(string uniform);
+	int AddUniform(string uniform);
 	void Bind();
 
 	void SetUniformInt(string uniformName, int value);
