@@ -4,6 +4,7 @@
 
 GameObject::GameObject()
 {
+	transform = new	Transform();
 }
 
 
@@ -24,6 +25,7 @@ GameObject::~GameObject()
 
 void GameObject::AddChild(GameObject * obj)
 {
+	Children.push_back(obj);
 }
 
 void GameObject::RemoveChild(GameObject * obj)
@@ -32,10 +34,22 @@ void GameObject::RemoveChild(GameObject * obj)
 
 void GameObject::AddComponent(Component * pComp)
 {
+	//TODO: Complete and check for duplicates
+	Components.push_back(pComp);
 }
 
 void GameObject::RemoveComponent(Component * pComp)
 {
+}
+
+void GameObject::SetTransform(Transform* t)
+{
+	transform = t;
+}
+
+Transform* GameObject::GetTransform()
+{
+	return transform;
 }
 
 void GameObject::Initialize(const GameContext gameContext)
@@ -44,13 +58,13 @@ void GameObject::Initialize(const GameContext gameContext)
 		return;
 
 	//User-Object Initialization
-	Initialize(gameContext);
+	//Initialize(gameContext);
 
 
 	//Root-Component Initialization
 	for (Component* pComp : Components)
 	{
-		pComp->Initialize(gameContext);
+		pComp->Initialize(gameContext, transform);
 	}
 
 	//Root-Object Initialization
@@ -62,33 +76,33 @@ void GameObject::Initialize(const GameContext gameContext)
 	initialized = true;
 }
 
-void GameObject::Draw(const GameContext gameContext)
+void GameObject::Draw(const GameContext gameContext, Shader* shader)
 {
 	//inherit draw in child class
-	Draw(gameContext);
+	//Draw(gameContext);
 
 	//Component draw
 	for (Component* pComp : Components)
 	{
-		pComp->Draw(gameContext);
+		pComp->Draw(gameContext, transform, shader);
 	}
 
 	//children objects draw
 	for (GameObject* pChild : Children)
 	{
-		pChild->Draw(gameContext);
+		pChild->Draw(gameContext, shader);
 	}
 }
 
 void GameObject::Update(const GameContext gameContext)
 {
 	//inherit Update in child class
-	Update(gameContext);
+	//Update(gameContext);
 
 	//Component Update
 	for (Component* pComp : Components)
 	{
-		pComp->Update(gameContext);
+		pComp->Update(gameContext, transform);
 	}
 
 	//children objects update

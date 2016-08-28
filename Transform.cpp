@@ -5,7 +5,7 @@
  float Transform::WIDTH;
  float Transform::HEIGHT;
  float Transform::FOV;
- Camera* Transform::CameraInstance;
+ Camera* Transform::camera;
 Transform::Transform()
 {
 	translation = Vector3(0, 0, 0);
@@ -117,5 +117,4 @@ void Transform::SetProjection(float width, float height, float fov, float zFar, 
 void Transform::SetCamera(Camera * val)
 {
 	camera = val;
-	Transform::CameraInstance = val;
 }

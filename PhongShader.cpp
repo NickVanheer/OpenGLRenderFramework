@@ -30,7 +30,6 @@ PhongShader::PhongShader() : Shader()
 	AddUniform("useTexture");
 	AddUniform("useSpecularTexture");
 
-
 	diffuseTextureUnit = AddUniform("sampler");
 	//specTextureUnit = AddUniform("SpecularMapSampler");
 
@@ -72,7 +71,7 @@ void PhongShader::UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix)
 	SetUniformFloat("specularIntensity", material->SpecularIntensity);
 	SetUniformFloat("specularPower", material->SpecularPower);
 
-	SetUniformVector("eyePos", Transform::CameraInstance->GetPosition());
+	SetUniformVector("eyePos", Transform::camera->GetPosition());
 
 	SetUniformVector("ambientLight", AmbientLight);
 	SetUniform("directionalLight", LightDirectional);

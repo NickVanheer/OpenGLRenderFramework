@@ -25,6 +25,8 @@ public:
 	void SetUniformMatrix(string uniformName, Matrix4 value);
 	void SetUniformBool(string uniformName, bool value);
 	void SetMaterial(Material* m);
+	void SetAttributeLocation(string attribName, int location);
+
 	Material* GetMaterial();
 
 	virtual void UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix);

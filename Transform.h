@@ -21,21 +21,22 @@ public:
 	void SetScale(Vector3 scale);
 	void SetScale(float x, float y, float z);
 
-	void SetProjection(float width, float height, float fov, float zFar, float zNear);
+	static void SetProjection(float width, float height, float fov, float zFar, float zNear);
 
-	static Camera* CameraInstance;
+	//static Camera* CameraInstance;
 	static float Z_NEAR;
 	static float Z_FAR;
 	static float WIDTH;
 	static float HEIGHT;
 	static float FOV;
-	Camera* GetCamera() const { return camera; }
-	void SetCamera(Camera* val);
+	static Camera* GetCamera() { return camera; }
+	static void SetCamera(Camera* val);
+	static Camera* camera;
 private:
 	Vector3 translation;
 	Vector3 rotation;
 	Vector3 scale;
-	Camera* camera;
+
 
 
 };

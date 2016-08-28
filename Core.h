@@ -15,6 +15,9 @@
 #include "Main.h"
 #include "InputManager.h"
 #include "Time.h"
+#include "BaseGame.h"
+#include "Transform.h"
+
 
 template<class T>
 inline void SafeDelete(T &pObjectToDelete)

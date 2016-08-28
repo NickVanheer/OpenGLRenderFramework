@@ -1,29 +1,30 @@
 #pragma once
-#include "Transform.h"
+#include "Core.h"
+
 class Mesh;
 class Shader;
 class Camera;
 class InputManager;
 class Texture;
 class Material;
+class GameObject;
 
-
-class Game
+class Game : public BaseGame
 {
 public:
 	Game();
 	virtual ~Game();
-	void Start();
+	void Initialize();
 	void Stop();
 	void Input();
 	void Update();
-	void Render();
+	/*void Render();*/ //done in renderengine
 	void Cleanup();
 	void SetInputManager(InputManager* inputManager);
 private:
 	Mesh* mesh;
 	Shader* shader;
-	Transform transform;
+	Transform* transform;
 	Camera* camera;
 	InputManager* inputManager;
 	Texture* texture;
@@ -34,7 +35,11 @@ private:
 	//floor
 	Mesh* meshFloor;
 	Shader* shaderFloor;
-	Transform transformFloor;
+	Transform* transformFloor;
 	Material* materialFloor;
+
+
+	GameObject* gOBox;
+
 };
 

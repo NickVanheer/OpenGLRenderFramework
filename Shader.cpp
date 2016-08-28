@@ -39,6 +39,7 @@ void Shader::AddGeometryShader(string text)
 	addProgram(text, GL_GEOMETRY_SHADER);
 }
 
+
 void Shader::CompileShader()
 {
 	//compile is already taken care of in addProgram
@@ -89,6 +90,11 @@ void Shader::SetUniformFloat(string uniformName, float value)
 	int index = uniforms.at(uniformName);
 	glUniform1f(index, value);
 
+}
+
+void Shader::SetAttributeLocation(string attribName, int location)
+{
+	glBindAttribLocation(gProgramID, location, attribName.c_str());
 }
 
 

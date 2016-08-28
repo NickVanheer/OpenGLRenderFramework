@@ -2,7 +2,8 @@
 #include "Core.h"
 #include "Component.h"
 #include <vector>
-
+#include "Transform.h"
+class Shader;
 class GameObject
 {
 public:
@@ -16,11 +17,13 @@ public:
 	//components
 	void AddComponent(Component* pComp);
 	void RemoveComponent(Component* pComp);
+	void SetTransform(Transform* t);
+	Transform* GetTransform();
 
-protected:
 	virtual void Initialize(const GameContext gameContext);
-	virtual void Draw(const GameContext gameContext);
+	virtual void Draw(const GameContext gameContext, Shader* shader);
 	virtual void Update(const GameContext gameContext);
+
 
 private:
 	std::vector<GameObject*> Children;
@@ -30,5 +33,6 @@ private:
 	GameObject& operator=(const GameObject& obj);
 
 	bool initialized;
+	Transform* transform;
 };
 
