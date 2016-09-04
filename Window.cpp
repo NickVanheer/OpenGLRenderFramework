@@ -2,6 +2,7 @@
 #include <iostream>
 #include "InputManager.h"
 
+
 Window::Window()
 {
 }
@@ -38,26 +39,44 @@ void Window::CreateWindow(int width, int height, TCHAR* title)
 		{
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 		}
-		
-			gContext = SDL_GL_CreateContext(gWindow);
-			if (gContext == NULL)
-			{
-				printf("OpenGL context could not be created! SDL Error: %s\n", SDL_GetError());
-			}
-			
-				//Initialize GLEW //modernopengl3
-				glewExperimental = GL_TRUE;
-				GLenum glewError = glewInit();
-				if (glewError != GLEW_OK)
-				{
-					printf("Error initializing GLEW! %s\n", glewGetErrorString(glewError));
-				}
 
-				//Use Vsync
-				if (SDL_GL_SetSwapInterval(1) < 0)
-				{
-					printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
-				}
+		if (TTF_Init() == -1)
+		{
+			printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+		}
+
+		//load font
+		bool success = true;
+
+		//Open the font
+		gFont = TTF_OpenFont("16_true_type_fonts/lazy.ttf", 28);
+
+		if (gFont == NULL)
+		{
+			printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+			success = false;
+		}
+
+		//
+		gContext = SDL_GL_CreateContext(gWindow);
+		if (gContext == NULL)
+		{
+			printf("OpenGL context could not be created! SDL Error: %s\n", SDL_GetError());
+		}
+			
+		//Initialize GLEW //modernopengl3
+		glewExperimental = GL_TRUE;
+		GLenum glewError = glewInit();
+		if (glewError != GLEW_OK)
+		{
+			printf("Error initializing GLEW! %s\n", glewGetErrorString(glewError));
+		}
+
+		//Use Vsync
+		if (SDL_GL_SetSwapInterval(1) < 0)
+		{
+			printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+		}
 		}
 }
 
@@ -166,6 +185,26 @@ int Window::GetHeight()
 	if (mode != nullptr)
 		return mode->h;
 	return 0;
+}
+
+void Window::DrawText(string txt)
+{
+	
+	SDL_Color textColor = { 255, 255, 255, 0 };
+	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, txt.c_str(), textColor);
+	SDL_Texture* text = SDL_CreateTextureFromSurface(gRenderer, textSurface);
+	int text_width = textSurface->w;
+	int text_height = textSurface->h;
+	SDL_FreeSurface(textSurface);
+	SDL_Rect renderQuad = { 20, 20, text_width, text_height };
+	SDL_RenderCopy(gRenderer, text, NULL, &renderQuad);
+	SDL_DestroyTexture(text);
+	
+}
+
+Vector2 Window::GetCenter()
+{
+	return Vector2(GetWidth() / 2, GetHeight() / 2);
 }
 
 bool Window::LoadImage(SDL_Surface *& image, TCHAR* path)

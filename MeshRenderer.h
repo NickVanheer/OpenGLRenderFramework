@@ -10,7 +10,7 @@ class MeshRenderer :
 public:
 	MeshRenderer(Mesh* mesh, Material* material);
 	virtual ~MeshRenderer();
-	void Draw(const GameContext gameContext, Transform* transform, Shader* shader);
+	void Render(const GameContext gameContext, Transform* transform, Shader* shader);
 	void Initialize(const GameContext gameContext, Transform* transform);
 	void Update(const GameContext gameContext, Transform* transform);
 private:

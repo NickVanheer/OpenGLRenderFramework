@@ -1,7 +1,12 @@
 #include "ForwardAmbient.h"
 
 
-ForwardAmbient* ForwardAmbient::instance = nullptr;
+Shader* ForwardAmbient::GetInstance()
+{
+	if (instance == nullptr)
+		instance = new ForwardAmbient();
+	return instance;
+}
 
 ForwardAmbient::ForwardAmbient() : Shader()
 {
@@ -22,11 +27,19 @@ ForwardAmbient::~ForwardAmbient()
 {
 }
 
-void ForwardAmbient::UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix)
+void ForwardAmbient::UpdateUniforms(Transform* transform)
 {
 	if (material->UseTexture)
 		material->GetTexture()->Bind(0);
 
-	SetUniformMatrix("MVP", projectionMatrix);
-	SetUniformVector("ambientIntensity", material->Color); //Get value from render engine
+
+	RenderEngine* r = GetRenderEngine();
+	Camera* c = r->GetMainCamera();
+
+
+	Matrix4 worldMatrix = transform->GetTransformation();
+	Matrix4 projectedMatrix = c->GetViewProjection().Multiply(worldMatrix);
+
+	SetUniformMatrix("MVP", projectedMatrix);
+	SetUniformVector("ambientIntensity", GetRenderEngine()->GetAmbientLight()); //Get value from render engine
 }

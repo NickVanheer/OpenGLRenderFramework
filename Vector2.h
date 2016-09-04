@@ -35,6 +35,7 @@ public:
 	float dot(Vector2 vec2);
 	float dot(Vector2 vec1, Vector2 vec2);
 
+	float cross(Vector2 vec);
 	Vector2 absolute();
 	Vector2 normalized();
 	Vector2 rotate(float angle);

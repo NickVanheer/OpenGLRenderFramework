@@ -9,7 +9,7 @@ public:
 
 	float Length();
 	Quaternion* Normalize();
-	Quaternion* Conjugate();
+	Quaternion Conjugate();
 	Quaternion* Multiply(Quaternion q);
 	Quaternion* Multiply(Vector3 v);
 	float x;

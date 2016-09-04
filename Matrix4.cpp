@@ -21,10 +21,10 @@ void Matrix4::InitializeIdentity()
 	CalculateSingleArray();
 }
 
-void Matrix4::InitializeProjection(float width, float height, float fov, float zFar, float zNear)
+void Matrix4::InitializePerspective(float fov, float aspectRatio, float zFar, float zNear)
 {
-	float aratio = width / height;
-	double halfFOV = TO_RADIANS(fov / 2);
+	float aratio = aspectRatio;
+	double halfFOV = fov / 2;
 	float tanHalfFOV = (float)tan(halfFOV);
 	float zRange = zNear - zFar;
 
@@ -36,7 +36,7 @@ void Matrix4::InitializeProjection(float width, float height, float fov, float z
 	CalculateSingleArray();
 }
 
-void Matrix4::InitializeCamera(Vector3 forward, Vector3 up)
+void Matrix4::InitializeRotation(Vector3 forward, Vector3 up)
 {
 	Vector3 f = forward;
 	f = f.normalized();

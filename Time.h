@@ -8,10 +8,9 @@ public:
 	~Time();
 
 
-	static long getTime();
-	static double getDelta();
+	static double getTime();
 	static double getSecond();
-	static void setDelta(double delta);
+
 	static long SECOND;
 private:
 	static double delta;

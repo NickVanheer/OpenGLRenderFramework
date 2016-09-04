@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "Helpers.h"
-
+#include "Vector2.h"
 class Vector3
 {
 public:
@@ -41,6 +41,15 @@ public:
 	float dot(Vector3 vec1, Vector3 vec2);
 	Vector3 cross(Vector3 vec);
 	Vector3 absolute();
+	Vector3 lerp(Vector3 dest, float lerpFactor);
+
+	Vector2 getXY();
+	Vector2 getYZ();
+	Vector2 getZX();
+
+	Vector2 getYX();
+	Vector2 getZY();
+	Vector2 getXZ();
 
 	Vector3 normalized();
 	Vector3 rotate(float angle, Vector3 axis);
@@ -60,6 +69,8 @@ Vector3 operator/(Vector3 v1, float s);
 float   operator^(Vector3 v1, Vector3 v2);  // DOT product
 Vector3 operator*(Vector3 v1, Vector3 v2);   // CROSS product
 Vector3 planelineintersection(Vector3 n, float d, Vector3 p1, Vector3 p2);
+
+
 
 class matrix
 {

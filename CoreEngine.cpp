@@ -2,13 +2,13 @@
 #include "CoreEngine.h"
 #include "Window.h"
 #include "Time.h"
-#include "Game.h"
+#include "BaseGame.h"
 #include "InputManager.h"
 #include <iostream>
 #include "RenderEngine.h"
+#include <thread>
+#include <chrono> 
 
-
-//const double CoreEngine::FRAME_CAP =  5000.0;
 void CoreEngine::stop()
 {
 	if (!isRunning)
@@ -19,102 +19,81 @@ void CoreEngine::stop()
 
 void CoreEngine::cleanUp()
 {
-	game->Cleanup();
+	delete game;
 	window->Close();
-}
-
-void CoreEngine::render()
-{
-	RenderUtil::ClearScreen();
-
-	renderingEngine->Render(game->GetRoot());
-	window->Render();
-
-	//game->Render();
-	//window->Render();
-}
-
-void CoreEngine::InitializeRenderingSystem()
-{
-	//initialize graphics //rendercontext gets created
-	std::cout << RenderUtil::GetOpenGLVersion();
-	RenderUtil::InitGraphics();
-
-	renderingEngine->Initialize();
 }
 
 void CoreEngine::CreateWindow(string title)
 {
 	//TODO string to TCHAR
 	window->CreateWindow(width, height, "OpenGL Renderer");
-	InitializeRenderingSystem();
-
+	this->renderingEngine = new RenderEngine();
+	this->game->SetMainCamera(this->renderingEngine->GetMainCamera());
+	//TODO set game main camera
 
 }
 
 void CoreEngine::run()
 {
 	isRunning = true;
-	int frames = 0;
-	long frameCounter = 0;
+	game->Initialize();
 	
-	long lastTime = time->getTime();
+	double lastTime = time->getTime();
 	double unprocessedTime = 0;
-	
-	
+	int frames = 0;
+	double frameCounter = 0;
+
+	GameContext gameContext = GameContext();
+	gameContext.deltaTime = (float)frameTime;
+
 	while (isRunning)
 	{
-		bool doRender = false;
-		long startTime = time->getTime();
-		long passedTime = startTime - lastTime; //time between the last 2 frames
+		bool renderFrame = false;
+
+		double startTime = time->getTime();
+		double passedTime = startTime - lastTime; //time between the last 2 frames
 		lastTime = startTime;
 
-		unprocessedTime += passedTime / (double)Time::SECOND;
+		unprocessedTime += passedTime;
 		frameCounter += passedTime;
-		int cc = 0;
+		
+		if (frameCounter >= 1.0)
+		{
+			printf("%i\n", frames);
+			frames = 0;
+			frameCounter = 0;
+		}
+
 		while (unprocessedTime > frameTime)
 		{
-			doRender = true;
-			unprocessedTime -= frameTime;
-
+			renderFrame = true;
+		
 			if (window->IsCloseRequested())
 				stop();
-
-			time->setDelta(frameTime);
-
-			//if (inputManager->IsKeyDown(SDL_SCANCODE_UP))
-
 			
-			//TODO: Update Game
-			game->Input();
-			game->Update();
+			game->Input(gameContext);
+			game->Update(gameContext);
 
-			if (frameCounter >= Time::SECOND)
-			{
-				//std::cout << frames << "\n";
-				frames = 0;
-				frameCounter = 0;
-			}
+			unprocessedTime -= frameTime;
 		}
 		//render
-		if (doRender)
+		if (renderFrame)
 		{
 			//TODO FIX 
-			//renderingEngine->Render(game->GetRoot());
-			//window->Render();
+			renderingEngine->Render(game->GetRoot(), gameContext);
+			window->Render();
 
-			render();
 			frames++;
 		}
 		else
 		{
-			//thread.sleep(1); //less wasting
+			std::this_thread::sleep_for(std::chrono::milliseconds(1)); //less waste
 		}
 	
 	}
 }
 
-CoreEngine::CoreEngine(int width, int height, int framerate, Game* game)
+CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game)
 {
 	inputManager = new InputManager();
 
@@ -128,7 +107,7 @@ CoreEngine::CoreEngine(int width, int height, int framerate, Game* game)
 	this->height = height;
 
 	this->frameTime = 1.0 / framerate;
-	this->renderingEngine = new RenderEngine();
+
 
 	isRunning = false;
 }
@@ -136,6 +115,7 @@ CoreEngine::CoreEngine(int width, int height, int framerate, Game* game)
 CoreEngine::~CoreEngine()
 {
 	//See CleanUp();
+	cleanUp();
 }
 
 void CoreEngine::start()
@@ -146,7 +126,7 @@ void CoreEngine::start()
 	//game only kicks in once the graphics stuff has been loaded.
 	//game = new Game();
 	game->SetInputManager(inputManager);
-	game->Initialize();
+
 
 	//start game loop
 	run();

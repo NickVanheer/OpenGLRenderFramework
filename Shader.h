@@ -3,8 +3,10 @@
 #include "Vector3.h"
 #include "Matrix4.h"
 #include "Material.h"
+#include "RenderEngine.h"
 #pragma once
 
+class RenderEngine;
 
 using namespace std;
 class Shader
@@ -27,19 +29,28 @@ public:
 	void SetMaterial(Material* m);
 	void SetAttributeLocation(string attribName, int location);
 
+
+	//
+	RenderEngine* GetRenderEngine();
+	void SetRenderEngine(RenderEngine* renderEngine);
+
+	virtual Shader* GetInstance() = 0;
 	Material* GetMaterial();
 
-	virtual void UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix);
+	virtual void UpdateUniforms(Transform* transform);
 
-	void TestRemove();
 private:
 	int gProgramID;
+	
 	void addProgram(std::string text, int type);
 	void printShaderLog(GLuint shader);
 	void printProgramLog(GLuint shader);
 	std::unordered_map<string, int> uniforms;
 protected: 
 	Material* material;
+	Shader* instance;
+	RenderEngine* renderEngine;
+
 
 
 };

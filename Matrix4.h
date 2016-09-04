@@ -10,11 +10,11 @@ public:
 	float singleArray[16];
 
 	void InitializeIdentity();
-	void InitializeCamera(Vector3 forward, Vector3 up);
+	void InitializeRotation(Vector3 forward, Vector3 up);
 	void InitializeTranslation(float x, float y, float z);
 	void InitializeScale(float x, float y, float z);
 	void InitializeRotation(float x, float y, float z);
-	void InitializeProjection(float width, float height, float fov, float zFar, float zNear);
+	void InitializePerspective(float fov, float aspectRatio, float zFar, float zNear);
 
 	Matrix4 Multiply(Matrix4 input);
 

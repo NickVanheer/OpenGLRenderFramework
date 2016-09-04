@@ -82,23 +82,14 @@ struct PointLight
 	}
 };
 
+//TODO separate
+
 class RenderUtil
 {
 public:
 	RenderUtil();
 	virtual ~RenderUtil();
-	static void ClearScreen();
 
-	static void InitGraphics();
-
-	static char* GetOpenGLVersion();
-
-	static void EnableTextures(bool enabled);
-	static void UnbindTextures();
-
-	static void SetClearColor(Vector3 color);
-
-	static std::vector<float> GetFloatVector(std::vector<Vertex> vertices);
 
 
 };

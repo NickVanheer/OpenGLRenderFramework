@@ -69,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Nick\Documents\Dev\OpenGL\OpenGLGameEngine\OpenGLGameEngine\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Nick\Documents\Dev\OpenGL\OpenGLGameEngine\OpenGLGameEngine\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -82,9 +82,9 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32s.lib;glut32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\Nick\Documents\Dev\OpenGL\OpenGLGameEngine\OpenGLGameEngine\glut-3.7.6-bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\lib\x86;C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\glut-3.7.6-bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,6 +131,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ForwardAmbient.cpp" />
+    <ClCompile Include="ForwardDirectional.cpp" />
+    <ClCompile Include="ForwardPoint.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Helpers.cpp" />
@@ -162,6 +164,8 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="ForwardAmbient.h" />
+    <ClInclude Include="ForwardDirectional.h" />
+    <ClInclude Include="ForwardPoint.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Helpers.h" />
@@ -178,6 +182,7 @@
     <ClInclude Include="RenderUtil.h" />
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />

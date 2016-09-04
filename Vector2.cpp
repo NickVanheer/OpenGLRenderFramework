@@ -29,6 +29,11 @@ float Vector2::dot(Vector2 vec1, Vector2 vec2)
 	return vec1.x*vec2.x + vec1.y*vec2.y;;
 }
 
+float Vector2::cross(Vector2 vec)
+{
+	return x * vec.y - y * vec.x;
+}
+
 Vector2 Vector2::absolute()
 {
 	return Vector2(abs(x), abs(y));

@@ -10,6 +10,10 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
+	return;
+
+	//todo fix cleanup error
+
 	//Component Cleanup
 	for (Component* pComp : Components)
 	{
@@ -76,7 +80,7 @@ void GameObject::Initialize(const GameContext gameContext)
 	initialized = true;
 }
 
-void GameObject::Draw(const GameContext gameContext, Shader* shader)
+void GameObject::Render(const GameContext gameContext, Shader* shader)
 {
 	//inherit draw in child class
 	//Draw(gameContext);
@@ -84,13 +88,13 @@ void GameObject::Draw(const GameContext gameContext, Shader* shader)
 	//Component draw
 	for (Component* pComp : Components)
 	{
-		pComp->Draw(gameContext, transform, shader);
+		pComp->Render(gameContext, transform, shader);
 	}
 
 	//children objects draw
 	for (GameObject* pChild : Children)
 	{
-		pChild->Draw(gameContext, shader);
+		pChild->Render(gameContext, shader);
 	}
 }
 

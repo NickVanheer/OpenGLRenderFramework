@@ -111,6 +111,12 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ForwardDirectional.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ForwardPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -202,6 +208,15 @@
     </ClInclude>
     <ClInclude Include="Main.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardDirectional.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

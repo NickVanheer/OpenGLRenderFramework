@@ -6,9 +6,8 @@ class ForwardAmbient :
 public:
 	ForwardAmbient();
 	virtual ~ForwardAmbient();
-	void UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix);
-	static ForwardAmbient* GetInstance() { return instance; }
-private:
-	static ForwardAmbient* instance;
+	void UpdateUniforms(Transform* transform);
+	virtual Shader* GetInstance();
+
 };
 

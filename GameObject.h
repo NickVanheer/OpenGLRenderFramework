@@ -21,7 +21,7 @@ public:
 	Transform* GetTransform();
 
 	virtual void Initialize(const GameContext gameContext);
-	virtual void Draw(const GameContext gameContext, Shader* shader);
+	virtual void Render(const GameContext gameContext, Shader* shader);
 	virtual void Update(const GameContext gameContext);
 
 

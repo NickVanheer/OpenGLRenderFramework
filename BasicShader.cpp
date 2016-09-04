@@ -18,11 +18,16 @@ BasicShader::~BasicShader()
 {
 }
 
-void BasicShader::UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix)
+void BasicShader::UpdateUniforms(Transform* transform)
 {
-	if (material->UseTexture)
 		material->GetTexture()->Bind(0);
 
-	SetUniformMatrix("transform", projectionMatrix);
+		RenderEngine* r = GetRenderEngine();
+ 		Camera* c = r->GetMainCamera();
+
+		Matrix4 worldMatrix = transform->GetTransformation();
+		Matrix4 projectedMatrix = c->GetViewProjection().Multiply(worldMatrix);
+
+	SetUniformMatrix("transform", projectedMatrix);
 	SetUniformVector("color", material->Color);
 }

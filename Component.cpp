@@ -19,7 +19,7 @@ void Component::Update(const GameContext gameContext, Transform* transform)
 {
 }
 
-void Component::Draw(const GameContext gameContext, Transform* transform, Shader* shader)
+void Component::Render(const GameContext gameContext, Transform* transform, Shader* shader)
 {
 }
 

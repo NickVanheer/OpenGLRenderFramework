@@ -6,6 +6,6 @@ class BasicShader :
 public:
 	BasicShader();
 	virtual ~BasicShader();
-	void UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix);
+	void UpdateUniforms(Transform* transform);
 };
 

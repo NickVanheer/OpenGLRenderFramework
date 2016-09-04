@@ -13,12 +13,11 @@ Main::~Main()
 
 int main(int argc, char **argv)
 {
-	CoreEngine* engine = new CoreEngine(800,600,60, new Game());
+	CoreEngine* engine = new CoreEngine(WINDOW_WIDTH, WINDOW_HEIGHT, FRAMES_PER_SECOND, new Game());
 	engine->CreateWindow("OpenGL Rendering Framework");
 	engine->start();
-	//m->start();
 	
-	//m->cleanUp();
+	delete engine;
 	//cin.get();
 	return 1;
 }

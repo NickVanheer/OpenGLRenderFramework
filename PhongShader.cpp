@@ -46,22 +46,32 @@ PhongShader::PhongShader() : Shader()
 	}
 }
 
-
+Shader* PhongShader::GetInstance()
+{
+	return instance;
+}
 PhongShader::~PhongShader()
 {
 }
 
-void PhongShader::UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix)
+void PhongShader::UpdateUniforms(Transform* transform)
 {
 	glActiveTexture(GL_TEXTURE0);
-	if (material->UseTexture)
+	///if (material->UseTexture)
 		material->GetTexture()->Bind(diffuseTextureUnit);
 
 	glActiveTexture(GL_TEXTURE1);
 	if (material->UseSpecularMap)
 		material->GetSpecularTexture()->Bind(specTextureUnit);
 
-	SetUniformMatrix("transformProjected", projectionMatrix);
+	RenderEngine* r = GetRenderEngine();
+	Camera* c = r->GetMainCamera();
+	
+	
+	Matrix4 worldMatrix = transform->GetTransformation();
+	Matrix4 projectedMatrix = c->GetViewProjection().Multiply(worldMatrix);
+
+	SetUniformMatrix("transformProjected", projectedMatrix);
 	SetUniformMatrix("transform", worldMatrix);
 	SetUniformVector("baseColor", material->Color);
 	SetUniformBool("useTexture", material->UseTexture);
@@ -71,7 +81,7 @@ void PhongShader::UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix)
 	SetUniformFloat("specularIntensity", material->SpecularIntensity);
 	SetUniformFloat("specularPower", material->SpecularPower);
 
-	SetUniformVector("eyePos", Transform::camera->GetPosition());
+	SetUniformVector("eyePos", c->GetPosition());
 
 	SetUniformVector("ambientLight", AmbientLight);
 	SetUniform("directionalLight", LightDirectional);

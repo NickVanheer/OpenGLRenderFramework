@@ -74,6 +74,36 @@ float Vector3::dot(Vector3 vec1, Vector3 vec2)
 	return vec1.x*vec2.x + vec1.y*vec2.y + vec1.z*vec2.z;
 }
 
+Vector2 Vector3::getXY()
+{
+	return Vector2(x, y);
+}
+
+Vector2 Vector3::getYZ()
+{
+	return Vector2(y, z);
+}
+
+Vector2 Vector3::getZX()
+{
+	return Vector2(z,x);
+}
+
+Vector2 Vector3::getYX()
+{
+	return Vector2(y, x);
+}
+
+Vector2 Vector3::getZY()
+{
+	return Vector2(z,y);
+}
+
+Vector2 Vector3::getXZ()
+{
+	return Vector2(x, z);
+}
+
 Vector3 Vector3::cross(Vector3 vec)
 {
 	float x_ = y * vec.z - z * vec.y;
@@ -88,6 +118,12 @@ Vector3 Vector3::absolute()
 	return Vector3(abs(x), abs(y), abs(z));
 }
 
+Vector3 Vector3::lerp(Vector3 dest, float lerpFactor)
+{
+	Vector3 a = dest - Vector3(x,y,z);
+	return (a * lerpFactor) + Vector3(x,y,z);
+}
+
 Vector3 Vector3::normalized()
 {
 	float length = this->length();
@@ -97,24 +133,41 @@ Vector3 Vector3::normalized()
 
 Vector3 Vector3::rotate(float angle, Vector3 axis)
 {
+
+
+	float sinAngle = sin(-angle);
+	float cosAngle = cos(-angle);
+
+	Vector3 rotX = cross(axis *  sinAngle);
+	Vector3 rotY = Vector3(x, y, z) * cosAngle;
+	Vector3 rotZ = axis * dot(axis * (1 - cosAngle));
+
+	Vector3 result = rotX + rotY + rotZ;
+
+	x = result.x;
+	y = result.y;
+	z = result.z;
+
+	return result;
+
 	float sinHalfAngle = sin(TO_RADIANS(angle / 2));
 	float cosHalfAngle = cos(TO_RADIANS(angle / 2));
-
+	//
 	float rX = axis.x * sinHalfAngle;
 	float rY = axis.y * sinHalfAngle;
 	float rZ = axis.z * sinHalfAngle;
 	float rW = cosHalfAngle;
 
 	Quaternion rotation = Quaternion(rX, rY, rZ, rW);
-	Quaternion* conjugate = rotation.Conjugate();
+	Quaternion conjugate = rotation.Conjugate();
 
 	//TODO: fix
 	Quaternion* w = rotation.Multiply(Vector3(x, y, z));
-	w->Multiply(*conjugate);
+	w->Multiply(conjugate);
 	x = w->x;
 	y - w->y;
 	z = w->z;
 	
 
-	return Vector3(w->x, w->y, w->z);
+	//return Vector3(w->x, w->y, w->z);
 }

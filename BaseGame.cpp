@@ -10,6 +10,9 @@ BaseGame::BaseGame()
 
 BaseGame::~BaseGame()
 {
+	delete root;
+	delete inputManager;
+	delete mainCamera;
 }
 
 GameObject * BaseGame::GetRoot()
@@ -21,7 +24,6 @@ GameObject * BaseGame::GetRoot()
 
 void BaseGame::Initialize()
 {
-	shader = new BasicShader();
 }
 
 void BaseGame::Input(GameContext gameContext)
@@ -29,12 +31,20 @@ void BaseGame::Input(GameContext gameContext)
 	//root->Input(gameContext);
 }
 
-void BaseGame::Render(GameContext gameContext)
-{
-	GetRoot()->Draw(gameContext, shader); //fix to not load shader every frame
-}
+
 
 void BaseGame::Update(GameContext gameContext)
 {
 	GetRoot()->Update(gameContext);
 }
+
+void BaseGame::SetInputManager(InputManager * inputManager)
+{
+	this->inputManager = inputManager;
+}
+
+void BaseGame::SetMainCamera(Camera* mainCam)
+{
+	this->mainCamera = mainCam;
+}
+

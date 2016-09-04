@@ -24,9 +24,9 @@ Quaternion* Quaternion::Normalize()
 	return this;
 }
 
-Quaternion * Quaternion::Conjugate()
+Quaternion Quaternion::Conjugate()
 {
-	return new Quaternion(-x,-y,-z,w);
+	return Quaternion(-x,-y,-z,w);
 }
 
 Quaternion * Quaternion::Multiply(Quaternion q)

@@ -1,10 +1,10 @@
 #pragma once
 #include "Vector3.h"
+#include "Matrix4.h"
 class Camera
 {
 public:
-	Camera();
-	Camera(Vector3 pos, Vector3 forward, Vector3 up);
+	Camera(float fov, float aspectRatio, float zNear, float zFar);
 	~Camera();
 	static Vector3 YAXIS;
 	Vector3 GetPosition() const { return position; }
@@ -21,9 +21,11 @@ public:
 
 	void RotateX(float angle);
 	void RotateY(float angle);
+	Matrix4 GetViewProjection();
 private:
 	Vector3 position;
 	Vector3 forward;
 	Vector3 up;
+	Matrix4 projection;
 };
 

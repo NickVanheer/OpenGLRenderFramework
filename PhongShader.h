@@ -7,7 +7,7 @@ class PhongShader :
 public:
 	PhongShader();
 	virtual ~PhongShader();
-	void UpdateUniforms(Matrix4 worldMatrix, Matrix4 projectionMatrix);
+	void UpdateUniforms(Transform* transform);
 	static Vector3 AmbientLight;
 	static DirectionalLight LightDirectional;
 	void SetUniform(string uniformName, BaseLight baseLight);
@@ -17,6 +17,7 @@ public:
 	static const int MAX_POINT_LIGHTS = 4;
 	static std::vector<PointLight> PointLights;
 	static void SetPointLights(std::vector<PointLight> pointLights);
+	virtual Shader* GetInstance();
 
 	int diffuseTextureUnit;
 	int specTextureUnit;

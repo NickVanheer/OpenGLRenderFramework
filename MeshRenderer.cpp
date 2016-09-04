@@ -16,12 +16,13 @@ MeshRenderer::~MeshRenderer()
 {
 }
 
-void MeshRenderer::Draw(const GameContext gameContext, Transform* transform, Shader* shader)
+void MeshRenderer::Render(const GameContext gameContext, Transform* transform, Shader* shader)
 {
 	//TODO check if shader is null
 	shader->Bind(); //use shader program
 	shader->SetMaterial(material); //set material 
-	shader->UpdateUniforms(transform->GetTransformation(), transform->GetProjectedTransformation()); //update shader variables and its material variables
+	shader->UpdateUniforms(transform);
+//shader->UpdateUniforms(transform->GetTransformation(), transform->GetProjectedTransformation()); //update shader variables and its material variables
 	mesh->Draw();
 }
 

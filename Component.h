@@ -12,7 +12,7 @@ public:
 
 	virtual void Initialize(const GameContext gameContext, Transform* transform);
 	virtual void Update(const GameContext gameContext, Transform* transform);
-	virtual void Draw(const GameContext gameContext, Transform* transform, Shader* shader);
+	virtual void Render(const GameContext gameContext, Transform* transform, Shader* shader);
 
 	void SetTransform(Transform t);
 

@@ -1,14 +1,8 @@
 #include "Transform.h"
-
- float Transform::Z_NEAR;
- float Transform::Z_FAR;
- float Transform::WIDTH;
- float Transform::HEIGHT;
- float Transform::FOV;
- Camera* Transform::camera;
+#include "Camera.h"
 Transform::Transform()
 {
-	translation = Vector3(0, 0, 0);
+	position = Vector3(0, 0, 0);
 	rotation = Vector3(0, 0, 0);
 	scale = Vector3(1, 1, 1);
 }
@@ -18,15 +12,15 @@ Transform::~Transform()
 {
 }
 
-Vector3 Transform::GetTranslation()
+Vector3 Transform::GetPosition()
 {
-	return translation;
+	return position;
 }
 
 Matrix4 Transform::GetTransformation()
 {
-	Matrix4 translationM;
-	translationM.InitializeTranslation(translation.x, translation.y, translation.z);
+	Matrix4 positionM;
+	positionM.InitializeTranslation(position.x, position.y, position.z);
 
 	Matrix4 rotationM;
 	rotationM.InitializeRotation(rotation.x, rotation.y, rotation.z);
@@ -34,45 +28,29 @@ Matrix4 Transform::GetTransformation()
 	Matrix4 scaleM;
 	scaleM.InitializeScale(scale.x, scale.y, scale.z);
 
-	Matrix4 finalM = translationM.Multiply(rotationM.Multiply(scaleM));
+	Matrix4 finalM = positionM.Multiply(rotationM.Multiply(scaleM));
 	return finalM;
 }
 
-Matrix4 Transform::GetProjectedTransformation()
+/*
+Matrix4 Transform::GetProjectedTransformation(Camera* camera)
 {
-	Matrix4 transformationMatrix = GetTransformation();
-	Matrix4 projectionMatrix;
-	projectionMatrix.InitializeProjection(WIDTH, HEIGHT, FOV, Z_FAR, Z_NEAR);
-
-	Matrix4 cameraRotation;
-	cameraRotation.InitializeCamera(camera->GetForward(), camera->GetUp());
-
-	Matrix4 cameraTranslation;
-	cameraTranslation.InitializeTranslation(-camera->GetPosition().x, -camera->GetPosition().y, -camera->GetPosition().z);
-
-	Matrix4 finalM = projectionMatrix.Multiply(cameraRotation.Multiply(cameraTranslation.Multiply(transformationMatrix)));
-	return finalM;
-
-	/*
-	Matrix4 cameraRotation;
-	cameraRotation.InitializeCamera(camera.GetForward(), camera.GetUp());
-
-	Matrix4 cameraTranslation;
-	cameraTranslation.InitializeTranslation(-camera.GetPosition().x, -camera.GetPosition().y, -camera.GetPosition().z);
-	*/
-	finalM = projectionMatrix.Multiply(transformationMatrix);
+	Matrix4 finalM = Matrix4();
+	finalM = camera->GetViewProjection().Multiply(GetTransformation());
 
 	return finalM;
 }
+*/
 
-void Transform::SetTranslation(Vector3 translation)
+
+void Transform::SetPosition(Vector3 position)
 {
-	this->translation = translation;
+	this->position = position;
 }
 
-void Transform::SetTranslation(float x, float y, float z)
+void Transform::SetPosition(float x, float y, float z)
 {
-	this->translation = Vector3(x, y, z);
+	this->position = Vector3(x, y, z);
 }
 
 Vector3 Transform::GetRotation()
@@ -103,18 +81,4 @@ void Transform::SetScale(Vector3 scale)
 void Transform::SetScale(float x, float y, float z)
 {
 	this->scale = Vector3(x, y, z);
-}
-
-void Transform::SetProjection(float width, float height, float fov, float zFar, float zNear)
-{
-	Transform::WIDTH = width;
-	Transform::HEIGHT = height;
-	Transform::FOV = fov;
-	Transform::Z_FAR = zFar;
-	Transform::Z_NEAR = zNear;
-}
-
-void Transform::SetCamera(Camera * val)
-{
-	camera = val;
 }

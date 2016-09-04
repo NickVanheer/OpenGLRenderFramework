@@ -46,7 +46,7 @@ void Mesh::AddVertices(std::vector<Vertex> vertices, std::vector<unsigned int> i
 	// VBO
 	glGenBuffers(1, &gVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, gVBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * Vertex::SIZE * sizeof(float), RenderUtil::GetFloatVector(vertices).data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * Vertex::SIZE * sizeof(float), GetFloatVector(vertices).data(), GL_STATIC_DRAW);
 
 	//structure
 	glGenBuffers(1, &gVAO);
