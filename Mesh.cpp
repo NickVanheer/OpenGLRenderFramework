@@ -32,14 +32,6 @@ void Mesh::AddVertices(std::vector<Vertex> vertices, std::vector<unsigned int> i
 
 	size = indices.size();
 
-	//sample
-	GLfloat vertexData[] = {
-		//  X     Y     Z       U     V
-		0.0f, 0.8f, 0.0f,   0.5f, 1.0f,
-		-0.8f,-0.8f, 0.0f,   0.0f, 0.0f,
-		0.8f,-0.8f, 0.0f,   1.0f, 0.0f,
-		0.8f,0.8f, 0.0f,   1.0f, 0.0f
-	};
 
 
 	//data
@@ -52,21 +44,6 @@ void Mesh::AddVertices(std::vector<Vertex> vertices, std::vector<unsigned int> i
 	glGenBuffers(1, &gVAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gVAO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), indices.data(), GL_STATIC_DRAW);
-
-
-	//texCoord 
-	/*
-	glGenBuffers(1, &texcoordbuffer);
-	glBindBuffer(GL_TEXTURE_3D, texcoordbuffer);
-	glBufferData(GL_TEXTURE_3D, textureCoordinates.size() * sizeof(float), textureCoordinates.data(), GL_STATIC_DRAW);
-	*/
-
-	//
-
-	
-
-
-	
 }
 float thing = 0.0f;
 void Mesh::Draw()
@@ -74,12 +51,14 @@ void Mesh::Draw()
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
 	
 	//v 1
 	glBindBuffer(GL_ARRAY_BUFFER, gVBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, 0); //v
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, (void*)12); //t
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, (void*)20); //n
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), 0); //vertex
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), (void*)12); //texture
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), (void*)20); //normal
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), (void*)32); //tangent
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gVAO);
 	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
@@ -87,6 +66,7 @@ void Mesh::Draw()
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(3);
 	return;
 }
 

@@ -13,6 +13,9 @@ Material::Material()
 		UseTexture = false;
 	else
 		UseTexture = true;
+
+	UseSpecularMap = false;
+	UseNormalMap = false;
 }
 
 Material::Material(Texture* texture, Vector3 color)
@@ -26,6 +29,9 @@ Material::Material(Texture* texture, Vector3 color)
 		UseTexture = false;
 	else
 		UseTexture = true;
+
+	UseSpecularMap = false;
+	UseNormalMap = false;
 }
 
 Material::Material(Texture * texture, Vector3 color, float specularIntensity, float specularPower) : Color(color), Textuur(texture), SpecularIntensity(specularIntensity), SpecularPower(specularPower)
@@ -34,13 +40,23 @@ Material::Material(Texture * texture, Vector3 color, float specularIntensity, fl
 		UseTexture = false;
 	else
 		UseTexture = true;
+
+	UseSpecularMap = false;
+	UseNormalMap = false;
 }
 
 Material::~Material()
 {
 	delete Textuur;
 }
-
+void Material::SetNormalMap(Texture * texture)
+{
+	this->NormalMapTexture = texture;
+	if (NormalMapTexture == nullptr)
+		UseNormalMap = false;
+	else
+		UseNormalMap = true;
+}
 void Material::SetSpecularMap(Texture * texture)
 {
 	this->SpecularMapTexture = texture;
@@ -67,4 +83,9 @@ Texture * Material::GetTexture()
 Texture * Material::GetSpecularTexture()
 {
 	return SpecularMapTexture;
+}
+
+Texture * Material::GetNormalMapTexture()
+{
+	return NormalMapTexture;
 }

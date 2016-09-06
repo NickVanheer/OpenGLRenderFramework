@@ -21,5 +21,6 @@ public:
 
 	int diffuseTextureUnit;
 	int specTextureUnit;
+	int normalTextureUnit;
 };
 

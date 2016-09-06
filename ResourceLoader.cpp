@@ -10,6 +10,13 @@
 #include "Texture.h"
 #include "Mesh.h"
 
+#pragma comment(lib, "assimp.lib") 
+
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing fla
+
+
 ResourceLoader::ResourceLoader()
 {
 }
@@ -63,7 +70,8 @@ string ResourceLoader::LoadShader(string filename)
 	return text;
 }
 
-Mesh * ResourceLoader::LoadModel(string filename)
+
+Mesh * ResourceLoader::LoadLegacy(string filename)
 {
 	std::ifstream file(filename);
 	Mesh* newMesh = new Mesh();
@@ -186,4 +194,60 @@ Mesh * ResourceLoader::LoadModel(string filename)
 	newMesh->AddVertices(Vertexes, indices, true);
 
 	return newMesh;
+}
+
+Mesh * ResourceLoader::LoadAssimp(string filename)
+{
+	//assimp loading
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(filename.c_str(),  aiProcess_GenSmoothNormals /* | aiProcess_FlipUVs */ | aiProcess_CalcTangentSpace);
+
+	if (!scene)
+	{
+		std::cout << "Can't open file " << filename; //TODO Error logging or assert
+		return nullptr;
+	}
+
+	const aiMesh* model = scene->mMeshes[0];
+
+	std::vector<Vertex> Vertexes;
+	std::vector<unsigned int> indices;
+
+	const aiVector3D aiZeroVector(0.0f, 0.0f, 0.0f);
+	for (unsigned int i = 0; i < model->mNumVertices; i++)
+	{
+		const aiVector3D* pPos = &(model->mVertices[i]);
+		const aiVector3D* pNormal = &(model->mNormals[i]);
+		const aiVector3D* pTexCoord = model->HasTextureCoords(0) ? &(model->mTextureCoords[0][i]) : &aiZeroVector;
+		const aiVector3D* pTangent = &(model->mTangents[i]);
+	
+		//converted to ours
+		Vector3 position = Vector3(pPos->x, pPos->y, pPos->z);
+		Vector3 normal = Vector3(pNormal->x, pNormal->y, pNormal->z);
+		Vector3 textCoord = Vector3(pTexCoord->x, pTexCoord->y, 0);
+		Vector3 tangent = Vector3(pTangent->x, pTangent->y, pTangent->z);
+
+
+		Vertex vert = Vertex(position, textCoord, normal, tangent);
+		Vertexes.push_back(vert);
+	}
+
+	//faces
+	for (unsigned int i = 0; i < model->mNumFaces; i++)
+	{
+		const aiFace& face = model->mFaces[i];
+		assert(face.mNumIndices == 3);
+		indices.push_back(face.mIndices[0]);
+		indices.push_back(face.mIndices[1]);
+		indices.push_back(face.mIndices[2]);
+	}
+
+	Mesh* newMesh = new Mesh();
+	newMesh->AddVertices(Vertexes, indices, false);
+	return newMesh;
+}
+
+Mesh * ResourceLoader::LoadModel(string filename)
+{
+	return LoadAssimp(filename);
 }

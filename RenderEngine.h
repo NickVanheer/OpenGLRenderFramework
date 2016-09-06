@@ -13,6 +13,7 @@
 class GameObject;
 class Shader;
 class Camera;
+class Window;
 
 
 class RenderEngine
@@ -28,10 +29,12 @@ public:
 
 	//
 	void SetMainCamera(Camera* cam);
-	Camera* GetMainCamera();
+	Camera* GetMainCamera() const;
 	Vector3 GetAmbientLight();
 	DirectionalLight GetDirectionalLight();
 	PointLight GetPointLight();
+
+	void SetMainWindow(Window* cam);
 
 
 	//
@@ -61,6 +64,8 @@ private:
 	Shader* forwardAmbient;
 	Shader* forwardDirectional;
 	Shader* forwardPoint;
+
+	Window* mainWindow;
 	
 };
 

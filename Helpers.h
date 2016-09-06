@@ -11,6 +11,10 @@ double TO_RADIANS(float degrees);
 float RangeConverter(float oldValue, float oldMin, float oldMax, float newMin, float newMax);
 
 double TO_DEGREES(float radians);
+
+float RandomFloat(float min, float max);
+int RandomRange(int min, int max);
+
 std::vector<std::string> &SPLIT(const std::string &s, char delim, std::vector<std::string> &elems);
 std::vector<std::string> SPLIT(const std::string &s, char delim);
 

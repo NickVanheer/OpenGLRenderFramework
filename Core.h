@@ -18,8 +18,8 @@
 #include "BaseGame.h"
 #include "Transform.h"
 
-static const int WINDOW_WIDTH = 800;
-static const int WINDOW_HEIGHT = 600;
+static const int WINDOW_WIDTH = 1280;
+static const int WINDOW_HEIGHT = 768;
 static const int FRAMES_PER_SECOND = 60;
 
 template<class T>
@@ -50,6 +50,11 @@ static std::vector<float> GetFloatVector(std::vector<Vertex> vertices)
 		verts.push_back(vertices.at(i).normal.x);
 		verts.push_back(vertices.at(i).normal.y);
 		verts.push_back(vertices.at(i).normal.z);
+
+		//tangents
+		verts.push_back(vertices.at(i).tangent.x);
+		verts.push_back(vertices.at(i).tangent.y);
+		verts.push_back(vertices.at(i).tangent.z);
 
 	}
 

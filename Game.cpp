@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "Mesh.h"
+#include "Helpers.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "BasicShader.h"
@@ -26,12 +27,14 @@ General TODOs:
 - Wrap major classes in core header (wip)
 - Separate rendering code from game code (done)
 - Destructor cleanup and fixes
+- Naming conventions
 - Component/GameObject system (done)
 - General code cleanup and framework improvements
-- Improving rendering materials: cubemap, normal map
+- Improving rendering materials: normal map (done)
 - Shadows
 - Geometry shader
-- Improved texture IDs and smoothing group-based normals
+- Improved texture IDs and smoothing group-based normals (done)
+- Fix references
 
 www.nickvanheer.com 
 nickvanheer at live.be
@@ -58,40 +61,37 @@ void Game::Initialize()
 
 	//box material
 	materialBox = new Material();
-	materialBox->Color = Vector3(0.0, 0.0, 0.0);
-	materialBox->SpecularPower = 4;
-	materialBox->SpecularIntensity = 4;
-	materialBox->SetTexture(ResourceLoader::LoadTexture("resources/textures/bluefield.jpg"));
-	//materialBox->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Spec.png"));
+	materialBox->Color = Vector3(1.0, 1.0, 1.0);
+	materialBox->SpecularPower = 3;
+	materialBox->SpecularIntensity = 2;
+	materialBox->SetTexture(ResourceLoader::LoadTexture("resources/textures/TrainFloor.png"));
+	materialBox->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Spec.png"));
+	materialBox->SetNormalMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Normal.png"));
 
 	//floor
 	meshFloor = ResourceLoader::LoadModel("resources/models/bigplane.obj");
 
 	materialFloor = new Material();
 	materialFloor->Color = Vector3(0.8, 0.8, 0.8);
-	materialFloor->SpecularPower = 4;
+	materialFloor->SpecularPower = 2;
 	materialFloor->SpecularIntensity = 2;
 	materialFloor->SetTexture(ResourceLoader::LoadTexture("resources/textures/Wall.png"));
-	materialFloor->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Spec.png"));
-
-	//RenderUtil::EnableTextures(true);
+	materialFloor->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/Wall_Spec.png"));
+	//materialFloor->SetNormalMap(ResourceLoader::LoadTexture("resources/textures/Wall_Normal.jpg"));
 
 	MeshRenderer* meshRendererFloor = new MeshRenderer(meshFloor, materialFloor);
-	MeshRenderer* meshRendererBox = new MeshRenderer(meshBox, materialBox);
 	
 	//
 	gOFloor = new GameObject();
 	gOFloor->AddComponent(meshRendererFloor);
-	gOFloor->GetTransform()->SetPosition(0, -2, 3);
-
-	gOBox = new GameObject();
-	gOBox->AddComponent(meshRendererBox);
-	gOBox->GetTransform()->SetPosition(0, 0, 3);
-	
-	//
-												   
-	//GetRoot()->AddChild(gOBox);
+	gOFloor->GetTransform()->SetPosition(0, -1, 2);
+	gOFloor->GetTransform()->SetRotation(-90, 0, 0);
+								   
 	GetRoot()->AddChild(gOFloor);
+	generateBoxes();
+
+	//zoom out
+	mainCamera->Move(mainCamera->GetForward(), -2);
 }
 
 void Game::Stop()
@@ -102,7 +102,7 @@ void Game::Stop()
 void Game::Input(GameContext gameContext)
 {
 
-	float movAmount = gameContext.deltaTime * 10;
+	float movAmount = gameContext.deltaTime * 2;
 	float rotAmount = gameContext.deltaTime;
 
 	if (inputManager->IsKeyDown(SDL_SCANCODE_W))
@@ -119,7 +119,6 @@ void Game::Input(GameContext gameContext)
 	if (inputManager->IsKeyDown(SDL_SCANCODE_RIGHT))
 		mainCamera->RotateY(rotAmount);
 
-	//TODO: Sort of broken
 	if (inputManager->IsKeyDown(SDL_SCANCODE_UP))
 		mainCamera->Move(mainCamera->GetUp(), movAmount);
 	if (inputManager->IsKeyDown(SDL_SCANCODE_DOWN))
@@ -130,44 +129,32 @@ float temp = 0.0f;
 GameContext okay;
 void Game::Update(GameContext gameContext)
 {
-	temp += gameContext.deltaTime;
-	
-	//gOBox->GetTransform()->SetRotation(sin(temp) * 90, sin(temp) * 180, 0);
-
 	BaseGame::Update(okay);
-	//GetRoot()->Update(okay);
 }
 
-
-/*
-void Game::Render()
+void Game::generateBoxes()
 {
-	//BaseGame::Render(okay);
-	//GetRoot()->Draw(okay);
-	return;
+	int count = 1;
+	MeshRenderer* meshRendererBox = new MeshRenderer(meshBox, materialBox);
 
-	//Torus
-	shader->Bind(); //use shader program
-	shader->SetMaterial(material); //set material
-	shader->UpdateUniforms(transform->GetTransformation(), transform->GetProjectedTransformation()); //update shader variables and its material variables
+	//
+	for (int i = 0; i < count; ++i)
+	{
+		for (int j = 0; j < count; j++)
+		{
+			GameObject* gO = new GameObject();
+			gO->AddComponent(meshRendererBox);
+			gO->GetTransform()->SetPosition(i * 4, 0, j * 4);
+			//gO->GetTransform()->Scale(0, RandomFloat(1, 3) , 0);
+			GetRoot()->AddChild(gO);
+		}
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glDisable(GL_CULL_FACE);
-	mesh->Draw(); //program is unbound in the above draw method
-
-
-	//Floor
-	shaderFloor->SetMaterial(materialFloor); //set material
-	shaderFloor->UpdateUniforms(transformFloor->GetTransformation(), transformFloor->GetProjectedTransformation()); //update shader variables and its material variables
-
-	meshFloor->Draw();
+	}
 
 }
-*/
 
 void Game::Cleanup()
 {
 	delete gOFloor;
-	delete gOBox;
 }
 

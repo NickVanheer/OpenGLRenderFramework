@@ -14,6 +14,9 @@ Window::~Window()
 
 void Window::CreateWindow(int width, int height, TCHAR* title)
 {
+	this->width = width;
+	this->height = height;
+
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -91,49 +94,46 @@ void Window::Render()
 
 	//core event loop, 1 frame of the rendering, outer loop in Main.cpp
 
-		//Handle events on queue
-		while (SDL_PollEvent(&e) != 0)
+	//Handle events on queue
+	while (SDL_PollEvent(&e) != 0)
+	{
+		//User requests quit
+		if (e.type == SDL_QUIT)
 		{
-			//User requests quit
-			if (e.type == SDL_QUIT)
-			{
-				isCloseRequested = true;
-			}
-			else if (e.type == SDL_KEYDOWN)
-			{
-				if (inputManager == nullptr)
-					return;
-				//SDL_SCANCODE_UP etc
-				inputManager->KeyDown(e.key.keysym.scancode);
-			}
-			else if (e.type == SDL_KEYUP)
-			{
-				if (inputManager == nullptr)
-					return;
-				inputManager->KeyUp(e.key.keysym.scancode);
-			}
-			else if (e.type == SDL_MOUSEBUTTONDOWN)
-			{
-				if (inputManager == nullptr) //TODO:Improve always calling InputManager
-					return;
-				inputManager->SetMouseDown(true);
-			}
-			else if (e.type == SDL_MOUSEBUTTONUP)
-			{
-				if (inputManager == nullptr) //TODO:Improve always calling InputManager
-					return;
-				inputManager->SetMouseDown(false);
-			}
-			else if (e.type == SDL_MOUSEMOTION)
-			{
-				if (inputManager == nullptr) //TODO:Improve always calling InputManager
-					return;
-				inputManager->SetMousePosition(e.motion.x,e.motion.y);
-			}
+			isCloseRequested = true;
 		}
-
-		//RenderModelTest();
-		//renderQuad();
+		else if (e.type == SDL_KEYDOWN)
+		{
+			if (inputManager == nullptr)
+				return;
+			//SDL_SCANCODE_UP etc
+			inputManager->KeyDown(e.key.keysym.scancode);
+		}
+		else if (e.type == SDL_KEYUP)
+		{
+			if (inputManager == nullptr)
+				return;
+			inputManager->KeyUp(e.key.keysym.scancode);
+		}
+		else if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			if (inputManager == nullptr) //TODO:Improve always calling InputManager
+				return;
+			inputManager->SetMouseDown(true);
+		}
+		else if (e.type == SDL_MOUSEBUTTONUP)
+		{
+			if (inputManager == nullptr) //TODO:Improve always calling InputManager
+				return;
+			inputManager->SetMouseDown(false);
+		}
+		else if (e.type == SDL_MOUSEMOTION)
+		{
+			if (inputManager == nullptr) //TODO:Improve always calling InputManager
+				return;
+			inputManager->SetMousePosition(e.motion.x,e.motion.y);
+		}
+	}
 
 		//update screen
 		SDL_GL_SwapWindow(gWindow);
@@ -143,6 +143,12 @@ void Window::Render()
 
 		//Update the surface
 		//SDL_UpdateWindowSurface(gWindow);
+}
+
+void Window::BindAsRenderTarget()
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glViewport(0, 0, GetWidth(), GetHeight());
 }
 
 void Window::Close()
@@ -171,20 +177,12 @@ bool Window::IsCloseRequested()
 
 int Window::GetWidth()
 {
-	SDL_DisplayMode* mode = nullptr;
-	SDL_GetDisplayMode(0, 0, mode);
-	if (mode != nullptr)
-		return mode->w;
-	return 0;
+	return width;
 }
 
 int Window::GetHeight()
 {
-	SDL_DisplayMode* mode = nullptr;
-	SDL_GetDisplayMode(0, 0, mode);
-	if (mode != nullptr)
-		return mode->h;
-	return 0;
+	return height;
 }
 
 void Window::DrawText(string txt)

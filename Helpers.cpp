@@ -20,6 +20,19 @@ double TO_DEGREES(float radians)
 	return degrees;
 }
 
+int RandomRange(int min, int max)
+{
+	return rand() % (max - min) + min;
+}
+
+float RandomFloat(float min, float max)
+{
+	float random = ((float)rand()) / (float)RAND_MAX;
+	float diff = max - min;
+	float r = random * diff;
+	return min + r;
+}
+
 float RangeConverter(float oldValue, float oldMin, float oldMax, float newMin, float newMax)
 {
 	float new_value = ((oldValue - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin;

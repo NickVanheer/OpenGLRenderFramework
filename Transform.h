@@ -20,6 +20,7 @@ public:
 	Vector3 GetScale();
 	void SetScale(Vector3 scale);
 	void SetScale(float x, float y, float z);
+	void Scale(float x, float y, float z);
 
 	//static Camera* CameraInstance;
 private:

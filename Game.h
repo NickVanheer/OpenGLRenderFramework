@@ -25,6 +25,9 @@ private:
 	//box
 	Mesh* meshBox;
 	Material* materialBox;
-	GameObject* gOBox;
+	vector<GameObject*> gOBoxes;
+
+	//generation
+	void generateBoxes();
 };
 

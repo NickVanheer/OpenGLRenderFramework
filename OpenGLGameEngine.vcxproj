@@ -69,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Assimp\include;C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Assimp\lib\x86;C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -82,9 +82,9 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32s.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;glut32.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\lib\x86;C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\glut-3.7.6-bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Program Files\Assimp\lib\x86;C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\lib\x86;C:\Users\Nick\Documents\GitHub\OpenGLRenderFramework\glut-3.7.6-bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

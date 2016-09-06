@@ -5,6 +5,8 @@
 #include "ForwardDirectional.h"
 #include "ForwardPoint.h"
 
+#include "Window.h"
+
 RenderEngine::RenderEngine()
 {
 	InitGraphics();
@@ -13,26 +15,22 @@ RenderEngine::RenderEngine()
 	float width = WINDOW_WIDTH;
 	float height = WINDOW_HEIGHT;
 	mainCamera = new Camera((float)TO_RADIANS(70.0f), width / height, 0.01f, 1000.0f);
-	ambientLight = Vector3(0.2f, 0.2f, 0.2f);
+	ambientLight = Vector3(0.4f, 0.4f, 0.4f);
 
-	Vector3 dLightDirection = Vector3(0.3f,1,0);
+	Vector3 dLightDirection = Vector3(-0.3f,1,-0.3f);
 	directionalLight = DirectionalLight(BaseLight(Vector3(1, 1, 1), 0.9f), dLightDirection);
-	pointLight = PointLight(BaseLight(Vector3(0, 1, 0), 0.9f), Attenuation(0, 0, 1), Vector3(0, 0, 0), 100);
+	pointLight = PointLight(BaseLight(Vector3(0, 1, 0), 0.9f), Attenuation(0, 0, 1), Vector3(0, 0, -2), 100);
 	
 	//shader init
 
 	forwardAmbient = new ForwardAmbient(); 
 	forwardAmbient->SetRenderEngine(this);
 
-
 	forwardDirectional = new ForwardDirectional();
 	forwardDirectional->SetRenderEngine(this);
 
 	forwardPoint = new ForwardPoint(); 
 	forwardPoint->SetRenderEngine(this);
-
-
-
 }
 
 void RenderEngine::Initialize()
@@ -44,17 +42,17 @@ RenderEngine::~RenderEngine()
 {
 }
 
-Vector3 RenderEngine::GetAmbientLight()
+ Vector3 RenderEngine::GetAmbientLight()
 {
 	return ambientLight;
 }
 
-DirectionalLight RenderEngine::GetDirectionalLight()
+ DirectionalLight RenderEngine::GetDirectionalLight()
 {
 	return directionalLight;
 }
 
-PointLight RenderEngine::GetPointLight()
+ PointLight RenderEngine::GetPointLight()
 {
 	return pointLight;
 }
@@ -67,11 +65,13 @@ void RenderEngine::Input(float delta)
 
 void RenderEngine::Render(GameObject* object, GameContext gameContext)
 {
+	mainWindow->BindAsRenderTarget();
 	ClearScreen();
+
 	const GameContext c = GameContext();
 
-	//OutputDebugString("gheloo");
-	object->Render(c, forwardAmbient);
+	object->Render(c, forwardDirectional);
+	return;
 
 	//enable correct blending
 	glEnable(GL_BLEND);
@@ -79,7 +79,9 @@ void RenderEngine::Render(GameObject* object, GameContext gameContext)
 	glDepthMask(false); //disables writing to depth buffer [pixel check to draw or not draw]
 	glDepthFunc(GL_EQUAL); //only adds to pixel when exact same depth value -> only do lighting calculations for pixels that make it into the final image
 
-	object->Render(c, forwardPoint);
+	//
+	//object->Render(c, forwardDirectional);
+	//object->Render(c, forwardPoint);
 	
 	//reset
 	glDepthFunc(GL_LESS); //default, only add pixels when less
@@ -121,7 +123,12 @@ void RenderEngine::SetMainCamera(Camera* cam)
 	mainCamera = cam;
 }
 
-Camera* RenderEngine::GetMainCamera()
+void RenderEngine::SetMainWindow(Window* window)
+{
+	this->mainWindow = window;
+}
+
+Camera* RenderEngine::GetMainCamera() const
 {
 	return mainCamera;
 }

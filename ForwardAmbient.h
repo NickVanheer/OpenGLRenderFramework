@@ -9,5 +9,7 @@ public:
 	void UpdateUniforms(Transform* transform);
 	virtual Shader* GetInstance();
 
+	int diffuseTextureUnit;
+
 };
 

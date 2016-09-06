@@ -19,6 +19,9 @@ public:
 	int GetHeight();
 	Vector2 GetCenter();
 
+	//
+	void BindAsRenderTarget();
+
 	bool LoadImage(SDL_Surface *& image, TCHAR* path);
 	bool SetInputManager(InputManager *& inputManager);
 
@@ -43,6 +46,8 @@ public:
 private:
 	bool isCloseRequested = false;
 	InputManager* inputManager;
+	int width;
+	int height;
 
 }; 
 

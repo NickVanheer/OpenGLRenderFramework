@@ -78,6 +78,14 @@ void Transform::SetScale(Vector3 scale)
 	this->scale = scale;
 }
 
+void Transform::Scale(float x, float y, float z)
+{
+
+	this->scale.x *= x == 0 ? 1 : x;
+	this->scale.y *= y == 0 ? 1 : y;
+	this->scale.z *= z == 0 ? 1 : z;
+}
+
 void Transform::SetScale(float x, float y, float z)
 {
 	this->scale = Vector3(x, y, z);

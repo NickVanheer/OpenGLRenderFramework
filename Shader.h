@@ -40,8 +40,6 @@ public:
 	virtual void UpdateUniforms(Transform* transform);
 
 private:
-	int gProgramID;
-	
 	void addProgram(std::string text, int type);
 	void printShaderLog(GLuint shader);
 	void printProgramLog(GLuint shader);
@@ -49,6 +47,7 @@ private:
 protected: 
 	Material* material;
 	Shader* instance;
+	int gProgramID;
 	RenderEngine* renderEngine;
 
 

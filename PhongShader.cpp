@@ -11,6 +11,8 @@ PhongShader::PhongShader() : Shader()
 	AddFragmentShader(ResourceLoader::LoadShader("resources/shaders/phongFragment.fs"));
 	CompileShader();
 
+	glUseProgram(gProgramID);
+
 	//core transforms
 	AddUniform("transform");
 	AddUniform("transformProjected");
@@ -27,11 +29,18 @@ PhongShader::PhongShader() : Shader()
 	AddUniform("specularPower");
 	AddUniform("eyePos");
 
+	//diffuse spec and normal samplers
+	diffuseTextureUnit = AddUniform("DiffuseMapSampler");
+	SetUniformInt("DiffuseMapSampler", 0);
 	AddUniform("useTexture");
+
+	specTextureUnit = AddUniform("SpecularMapSampler");
+	SetUniformInt("SpecularMapSampler", 1);
 	AddUniform("useSpecularTexture");
 
-	diffuseTextureUnit = AddUniform("sampler");
-	//specTextureUnit = AddUniform("SpecularMapSampler");
+	normalTextureUnit = AddUniform("NormalMapSampler");
+	SetUniformInt("NormalMapSampler", 2);
+	AddUniform("useNormalTexture");
 
 	//point lights
 	for (int i = 0; i < MAX_POINT_LIGHTS; i++)
@@ -56,13 +65,19 @@ PhongShader::~PhongShader()
 
 void PhongShader::UpdateUniforms(Transform* transform)
 {
+	glUseProgram(gProgramID);
+
 	glActiveTexture(GL_TEXTURE0);
-	///if (material->UseTexture)
+	if (material->UseTexture)
 		material->GetTexture()->Bind(diffuseTextureUnit);
 
 	glActiveTexture(GL_TEXTURE1);
 	if (material->UseSpecularMap)
 		material->GetSpecularTexture()->Bind(specTextureUnit);
+
+	glActiveTexture(GL_TEXTURE2);
+	if (material->UseNormalMap)
+		material->GetNormalMapTexture()->Bind(normalTextureUnit);
 
 	RenderEngine* r = GetRenderEngine();
 	Camera* c = r->GetMainCamera();
@@ -73,18 +88,25 @@ void PhongShader::UpdateUniforms(Transform* transform)
 
 	SetUniformMatrix("transformProjected", projectedMatrix);
 	SetUniformMatrix("transform", worldMatrix);
+
+	//base
 	SetUniformVector("baseColor", material->Color);
 	SetUniformBool("useTexture", material->UseTexture);
-	SetUniformBool("useSpecularTexture", material->UseSpecularMap);
 
 	//specular
 	SetUniformFloat("specularIntensity", material->SpecularIntensity);
 	SetUniformFloat("specularPower", material->SpecularPower);
+	SetUniformBool("useSpecularTexture", material->UseSpecularMap);
+
+	//normal
+	SetUniformBool("useNormalTexture", material->UseNormalMap);
 
 	SetUniformVector("eyePos", c->GetPosition());
 
 	SetUniformVector("ambientLight", AmbientLight);
 	SetUniform("directionalLight", LightDirectional);
+
+
 
 	for (int i = 0; i < PointLights.size(); i++)
 		SetUniform("pointLights[" + to_string(i) + "]", PointLights.at(i));

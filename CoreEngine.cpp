@@ -29,6 +29,7 @@ void CoreEngine::CreateWindow(string title)
 	window->CreateWindow(width, height, "OpenGL Renderer");
 	this->renderingEngine = new RenderEngine();
 	this->game->SetMainCamera(this->renderingEngine->GetMainCamera());
+	this->renderingEngine->SetMainWindow(window);
 	//TODO set game main camera
 
 }
@@ -79,7 +80,6 @@ void CoreEngine::run()
 		//render
 		if (renderFrame)
 		{
-			//TODO FIX 
 			renderingEngine->Render(game->GetRoot(), gameContext);
 			window->Render();
 
@@ -87,7 +87,8 @@ void CoreEngine::run()
 		}
 		else
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(1)); //less waste
+			//Causes freezes
+			//std::this_thread::sleep_for(std::chrono::milliseconds(1)); //less waste
 		}
 	
 	}
@@ -100,14 +101,12 @@ CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game)
 	window = new Window();
 	window->SetInputManager(inputManager);
 
-	//RenderUtil->InitGraphics() commented out
 	this->time = new Time();
 	this->game = game;
 	this->width = width;
 	this->height = height;
 
 	this->frameTime = 1.0 / framerate;
-
 
 	isRunning = false;
 }
@@ -124,9 +123,7 @@ void CoreEngine::start()
 		return;
 
 	//game only kicks in once the graphics stuff has been loaded.
-	//game = new Game();
 	game->SetInputManager(inputManager);
-
 
 	//start game loop
 	run();
