@@ -5,12 +5,13 @@ class Material
 {
 public:
 	Material();
+	Material(string materialName);
 	Material(Texture* texture, Vector3 color);
 	Material(Texture* texture, Vector3 color, float specularIntensity, float specularExponent);
 	virtual ~Material();
 	Vector3 Color;
 
-
+	string Name;
 	void SetNormalMap(Texture* texture);
 	void SetSpecularMap(Texture* texture);
 	void SetTexture(Texture* texture);

@@ -18,6 +18,23 @@ Material::Material()
 	UseNormalMap = false;
 }
 
+Material::Material(string materialName)
+{
+	this->Name = materialName;
+	this->Textuur = nullptr;
+	this->Color = Vector3(1, 1, 1);
+	this->SpecularPower = 32;
+	this->SpecularIntensity = 2;
+
+	if (Textuur == nullptr)
+		UseTexture = false;
+	else
+		UseTexture = true;
+
+	UseSpecularMap = false;
+	UseNormalMap = false;
+}
+
 Material::Material(Texture* texture, Vector3 color)
 {
 	this->Textuur = texture;

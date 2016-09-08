@@ -4,10 +4,11 @@
 #include "ForwardAmbient.h"
 #include "ForwardDirectional.h"
 #include "ForwardPoint.h"
-
+#include "PhongShader.h"
 #include "Window.h"
 
-RenderEngine::RenderEngine()
+bool RenderEngine::isWireFrame;
+RenderEngine::RenderEngine() 
 {
 	InitGraphics();
 	
@@ -17,12 +18,13 @@ RenderEngine::RenderEngine()
 	mainCamera = new Camera((float)TO_RADIANS(70.0f), width / height, 0.01f, 1000.0f);
 	ambientLight = Vector3(0.4f, 0.4f, 0.4f);
 
+	Vector3 baseColor = Vector3(0.9, 0.9, 0.9);
+	float lightIntensity = 0.9f;
 	Vector3 dLightDirection = Vector3(-0.3f,1,-0.3f);
-	directionalLight = DirectionalLight(BaseLight(Vector3(1, 1, 1), 0.9f), dLightDirection);
+	directionalLight = DirectionalLight(BaseLight(baseColor, lightIntensity), dLightDirection);
 	pointLight = PointLight(BaseLight(Vector3(0, 1, 0), 0.9f), Attenuation(0, 0, 1), Vector3(0, 0, -2), 100);
 	
 	//shader init
-
 	forwardAmbient = new ForwardAmbient(); 
 	forwardAmbient->SetRenderEngine(this);
 
@@ -31,6 +33,12 @@ RenderEngine::RenderEngine()
 
 	forwardPoint = new ForwardPoint(); 
 	forwardPoint->SetRenderEngine(this);
+
+	//PhongShader
+	phongShader = new PhongShader();
+	phongShader->SetRenderEngine(this);
+	PhongShader::AmbientLight = Vector3(0.1f, 0.1f, 0.1f);
+	PhongShader::LightDirectional = DirectionalLight(BaseLight(baseColor, lightIntensity), dLightDirection);
 }
 
 void RenderEngine::Initialize()
@@ -62,24 +70,33 @@ void RenderEngine::Input(float delta)
 
 }
 
+void RenderEngine::ToggleWireframe()
+{
+	isWireFrame = !isWireFrame;
+}
 
 void RenderEngine::Render(GameObject* object, GameContext gameContext)
 {
 	mainWindow->BindAsRenderTarget();
 	ClearScreen();
 
+	if (isWireFrame)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	const GameContext c = GameContext();
 
-	object->Render(c, forwardDirectional);
+	object->Render(c, phongShader);
 	return;
 
-	//enable correct blending
+	//Forward rendering
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE); //existing color times one, new color times one -> so add
 	glDepthMask(false); //disables writing to depth buffer [pixel check to draw or not draw]
 	glDepthFunc(GL_EQUAL); //only adds to pixel when exact same depth value -> only do lighting calculations for pixels that make it into the final image
 
-	//
+	//do multiple light passes here
 	//object->Render(c, forwardDirectional);
 	//object->Render(c, forwardPoint);
 	

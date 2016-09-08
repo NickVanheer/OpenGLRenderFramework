@@ -3,8 +3,9 @@
 const int MAX_POINT_LIGHTS = 4;
 
 in vec2 texCoord0;
-in vec3 normal0;
+in mat3 tbnMatrix;
 in vec3 worldPos0;
+in vec3 normy;
 
 out vec4 fragColor;
 
@@ -37,7 +38,7 @@ struct PointLight
 
 uniform vec3 ambientLight;
 uniform vec3 baseColor;
-uniform sampler2D sampler;
+uniform sampler2D DiffuseMapSampler;
 uniform sampler2D SpecularMapSampler;
 uniform sampler2D NormalMapSampler;
 
@@ -148,14 +149,17 @@ void main()
 
 	if(useTexture)
 	{
-		vec4 textureColor = texture2D(sampler,texCoord0.xy);
+		vec4 textureColor = texture2D(DiffuseMapSampler,texCoord0.xy);
 		color *= textureColor;
 	}
 
-	vec3 normal = normalize(normal0);
+	vec3 normal = normy;
 	
-	specularColor = calcSpecularLight(directionalLight.base, -directionalLight.direction, normal, texCoord0);
-	
+	if(useNormalTexture)
+		normal = normalize(tbnMatrix * (2 * texture2D(NormalMapSampler,texCoord0.xy).xyz - 1));
+
+	if(useSpecularTexture)
+		specularColor = calcSpecularLight(directionalLight.base, -directionalLight.direction, normal, texCoord0);
 	
 	totalLight += calcDirectionalLight(directionalLight, normal) + specularColor;
 	

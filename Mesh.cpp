@@ -53,7 +53,6 @@ void Mesh::Draw()
 	glEnableVertexAttribArray(2);
 	glEnableVertexAttribArray(3);
 	
-	//v 1
 	glBindBuffer(GL_ARRAY_BUFFER, gVBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), 0); //vertex
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), (void*)12); //texture
@@ -67,7 +66,6 @@ void Mesh::Draw()
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(3);
-	return;
 }
 
 void Mesh::CalculateNormals(std::vector<Vertex> & vertices, std::vector<unsigned int> indices)

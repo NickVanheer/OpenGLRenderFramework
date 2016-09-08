@@ -60,7 +60,7 @@ void Game::Initialize()
 	meshBox = ResourceLoader::LoadModel("resources/models/cube.obj");
 
 	//box material
-	materialBox = new Material();
+	materialBox = new Material("BoxMaterial");
 	materialBox->Color = Vector3(1.0, 1.0, 1.0);
 	materialBox->SpecularPower = 3;
 	materialBox->SpecularIntensity = 2;
@@ -71,13 +71,13 @@ void Game::Initialize()
 	//floor
 	meshFloor = ResourceLoader::LoadModel("resources/models/bigplane.obj");
 
-	materialFloor = new Material();
+	materialFloor = new Material("FloorMaterial");
 	materialFloor->Color = Vector3(0.8, 0.8, 0.8);
-	materialFloor->SpecularPower = 2;
-	materialFloor->SpecularIntensity = 2;
+	materialFloor->SpecularPower = 0.3;
+	materialFloor->SpecularIntensity = 1.2;
 	materialFloor->SetTexture(ResourceLoader::LoadTexture("resources/textures/Wall.png"));
 	materialFloor->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/Wall_Spec.png"));
-	//materialFloor->SetNormalMap(ResourceLoader::LoadTexture("resources/textures/Wall_Normal.jpg"));
+	materialFloor->SetNormalMap(ResourceLoader::LoadTexture("resources/textures/Wall_Normal.png"));
 
 	MeshRenderer* meshRendererFloor = new MeshRenderer(meshFloor, materialFloor);
 	

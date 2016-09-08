@@ -20,6 +20,9 @@ public:
 
 	void CreateWindow(std::string title);
 
+	//TODO fix
+private:
+	bool isSingleFrame;
 	InputManager* inputManager;
 	Window* window;
 	Time* time;

@@ -77,6 +77,7 @@ void CoreEngine::run()
 
 			unprocessedTime -= frameTime;
 		}
+
 		//render
 		if (renderFrame)
 		{
@@ -84,6 +85,12 @@ void CoreEngine::run()
 			window->Render();
 
 			frames++;
+
+			if (isSingleFrame)
+			{
+				cin.get(); //wait for a keypress
+				isRunning = false;
+			}
 		}
 		else
 		{
@@ -94,7 +101,7 @@ void CoreEngine::run()
 	}
 }
 
-CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game)
+CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game) : isSingleFrame(false)
 {
 	inputManager = new InputManager();
 

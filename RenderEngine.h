@@ -41,7 +41,7 @@ public:
 	static void ClearScreen();
 
 	static void InitGraphics();
-
+	static void ToggleWireframe();
 	static char* GetOpenGLVersion();
 
 	static void EnableTextures(bool enabled);
@@ -61,11 +61,15 @@ private:
 	PointLight pointLight;
 	Camera* mainCamera;
 
+
+	Shader* phongShader;
 	Shader* forwardAmbient;
 	Shader* forwardDirectional;
 	Shader* forwardPoint;
 
 	Window* mainWindow;
+
+	static bool isWireFrame;
 	
 };
 
