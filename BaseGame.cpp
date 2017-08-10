@@ -10,7 +10,7 @@ BaseGame::BaseGame()
 
 BaseGame::~BaseGame()
 {
-	delete root;
+	delete root; //All root objects deleted here.
 	delete inputManager;
 	delete mainCamera;
 }
@@ -26,12 +26,15 @@ void BaseGame::Initialize()
 {
 }
 
+void BaseGame::AddToGame(GameObject * GO)
+{
+	GetRoot()->AddChild(GO);
+}
+
 void BaseGame::Input(GameContext gameContext)
 {
 	//root->Input(gameContext);
 }
-
-
 
 void BaseGame::Update(GameContext gameContext)
 {

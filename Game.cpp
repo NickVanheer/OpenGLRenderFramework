@@ -56,19 +56,7 @@ void Game::Initialize()
 {
 	BaseGame::Initialize();
 
-	//box model TODO: flip in code flag
-	meshBox = ResourceLoader::LoadModel("resources/models/cube.obj");
-
-	//box material
-	materialBox = new Material("BoxMaterial");
-	materialBox->Color = Vector3(1.0, 1.0, 1.0);
-	materialBox->SpecularPower = 3;
-	materialBox->SpecularIntensity = 2;
-	materialBox->SetTexture(ResourceLoader::LoadTexture("resources/textures/TrainFloor.png"));
-	materialBox->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Spec.png"));
-	materialBox->SetNormalMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Normal.png"));
-
-	//floor
+	//FLOOR
 	meshFloor = ResourceLoader::LoadModel("resources/models/bigplane.obj");
 
 	materialFloor = new Material("FloorMaterial");
@@ -85,34 +73,49 @@ void Game::Initialize()
 	gOFloor = new GameObject();
 	gOFloor->AddComponent(meshRendererFloor);
 	gOFloor->GetTransform()->SetPosition(0, -1, 2);
-	gOFloor->GetTransform()->SetRotation(-90, 0, 0);
+	gOFloor->GetTransform()->SetRotation(-0, 0, 0);
 								   
-	GetRoot()->AddChild(gOFloor);
-	generateBoxes();
+	AddToGame(gOFloor);
+
+	//BOX
+	meshBox = ResourceLoader::LoadModel("resources/models/cube.obj");
+
+	//box material
+	materialBox = new Material("BoxMaterial");
+	materialBox->Color = Vector3(1.0, 1.0, 1.0);
+	materialBox->SpecularPower = 3;
+	materialBox->SpecularIntensity = 2;
+	materialBox->SetTexture(ResourceLoader::LoadTexture("resources/textures/TrainFloor.png"));
+	materialBox->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Spec.png"));
+	materialBox->SetNormalMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Normal.png"));
+
+	MeshRenderer* meshRendererBox = new MeshRenderer(meshBox, materialBox);
+
+	//
+	gOBox = new GameObject();
+	gOBox->AddComponent(meshRendererBox);
+	gOBox->GetTransform()->SetPosition(0, 0, 0);
+	//gO->GetTransform()->Scale(0, RandomFloat(1, 3) , 0);
+	AddToGame(gOBox);
 
 	//zoom out
 	mainCamera->Move(mainCamera->GetForward(), -2);
 }
 
-void Game::Stop()
-{
-
-}
-
 void Game::Input(GameContext gameContext)
 {
-
-	float movAmount = gameContext.deltaTime * 2;
+	float movAmount = gameContext.deltaTime;
 	float rotAmount = gameContext.deltaTime;
 
 	if (inputManager->IsKeyDown(SDL_SCANCODE_W))
-		mainCamera->Move(mainCamera->GetForward(), movAmount);
+		mainCamera->MoveForward(movAmount);
 	if (inputManager->IsKeyDown(SDL_SCANCODE_S))
-		mainCamera->Move(mainCamera->GetForward(), -movAmount);
+		mainCamera->MoveForward(-movAmount);
+
 	if (inputManager->IsKeyDown(SDL_SCANCODE_A))
-		mainCamera->Move(mainCamera->GetLeft(), movAmount);
+		mainCamera->MoveLeft(movAmount);
 	if (inputManager->IsKeyDown(SDL_SCANCODE_D))
-		mainCamera->Move(mainCamera->GetRight(), movAmount);
+		mainCamera->MoveRight(movAmount);
 
 	if (inputManager->IsKeyDown(SDL_SCANCODE_LEFT))
 		mainCamera->RotateY(-rotAmount);
@@ -120,16 +123,16 @@ void Game::Input(GameContext gameContext)
 		mainCamera->RotateY(rotAmount);
 
 	if (inputManager->IsKeyDown(SDL_SCANCODE_UP))
-		mainCamera->Move(mainCamera->GetUp(), movAmount);
+		mainCamera->MoveUp(movAmount);
 	if (inputManager->IsKeyDown(SDL_SCANCODE_DOWN))
-		mainCamera->Move(mainCamera->GetUp(), -movAmount);
+		mainCamera->MoveUp(-movAmount);
 }
 
-float temp = 0.0f;
-GameContext okay;
 void Game::Update(GameContext gameContext)
 {
-	BaseGame::Update(okay);
+	BaseGame::Update(gameContext);
+	float y = gOFloor->GetTransform()->GetRotation().y;
+	gOFloor->GetTransform()->SetRotation(0, y + gameContext.deltaTime * 5, 0);
 }
 
 void Game::generateBoxes()
@@ -148,13 +151,11 @@ void Game::generateBoxes()
 			//gO->GetTransform()->Scale(0, RandomFloat(1, 3) , 0);
 			GetRoot()->AddChild(gO);
 		}
-
 	}
 
 }
 
 void Game::Cleanup()
 {
-	delete gOFloor;
+	//Root GameObjects and Components destroyed in BaseGame's destructor.
 }
-

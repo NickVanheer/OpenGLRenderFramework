@@ -85,9 +85,7 @@ void RenderEngine::Render(GameObject* object, GameContext gameContext)
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	const GameContext c = GameContext();
-
-	object->Render(c, phongShader);
+	object->Render(gameContext, phongShader);
 	return;
 
 	//Forward rendering
@@ -97,8 +95,8 @@ void RenderEngine::Render(GameObject* object, GameContext gameContext)
 	glDepthFunc(GL_EQUAL); //only adds to pixel when exact same depth value -> only do lighting calculations for pixels that make it into the final image
 
 	//do multiple light passes here
-	//object->Render(c, forwardDirectional);
-	//object->Render(c, forwardPoint);
+	//object->Render(gameContext, forwardDirectional);
+	//object->Render(gameContext, forwardPoint);
 	
 	//reset
 	glDepthFunc(GL_LESS); //default, only add pixels when less
@@ -180,19 +178,3 @@ void RenderEngine::SetClearColor(Vector3 color)
 	glClearColor(color.x, color.y, color.z, 1);
 }
 
-void RenderEngine::DrawGrid(int halfGridSize)
-{
-/*
-	for (int i = -halfGridSize; i <= halfGridSize; i++)
-	{
-		glVertex3f((float)i, 0, (float)-halfGridSize);
-		glVertex3f((float)i, 0, (float)halfGridSize);
-
-		glVertex3f((float)-halfGridSize, 0, (float)i);
-		glVertex3f((float)halfGridSize, 0, (float)i);
-	}
-
-*/
-
-
-}

@@ -9,20 +9,6 @@
 #include <thread>
 #include <chrono> 
 
-void CoreEngine::stop()
-{
-	if (!isRunning)
-		return;
-
-	isRunning = false;
-}
-
-void CoreEngine::cleanUp()
-{
-	delete game;
-	window->Close();
-}
-
 void CoreEngine::CreateWindow(string title)
 {
 	//TODO string to TCHAR
@@ -49,38 +35,32 @@ void CoreEngine::run()
 
 	while (isRunning)
 	{
-		bool renderFrame = false;
-
 		double startTime = time->getTime();
-		double passedTime = startTime - lastTime; //time between the last 2 frames
-		lastTime = startTime;
+		double frameDelta = startTime - lastTime; //time between the last 2 frames
 
-		unprocessedTime += passedTime;
-		frameCounter += passedTime;
+		unprocessedTime += frameDelta;
+		frameCounter += frameDelta;
 		
+		//print fps every second
 		if (frameCounter >= 1.0)
 		{
-			printf("%i\n", frames);
+			printf("fps: %i \n", frames);
 			frames = 0;
 			frameCounter = 0;
 		}
 
 		while (unprocessedTime > frameTime)
 		{
-			renderFrame = true;
-		
 			if (window->IsCloseRequested())
 				stop();
+
+			gameContext.deltaTime = frameDelta;
 			
 			game->Input(gameContext);
 			game->Update(gameContext);
 
 			unprocessedTime -= frameTime;
-		}
 
-		//render
-		if (renderFrame)
-		{
 			renderingEngine->Render(game->GetRoot(), gameContext);
 			window->Render();
 
@@ -91,13 +71,10 @@ void CoreEngine::run()
 				cin.get(); //wait for a keypress
 				isRunning = false;
 			}
+
+			lastTime = startTime;
 		}
-		else
-		{
-			//Causes freezes
-			//std::this_thread::sleep_for(std::chrono::milliseconds(1)); //less waste
-		}
-	
+
 	}
 }
 
@@ -112,7 +89,7 @@ CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game) : i
 	this->game = game;
 	this->width = width;
 	this->height = height;
-
+	this->frameRate = framerate;
 	this->frameTime = 1.0 / framerate;
 
 	isRunning = false;
@@ -120,8 +97,21 @@ CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game) : i
 
 CoreEngine::~CoreEngine()
 {
-	//See CleanUp();
 	cleanUp();
+}
+
+void CoreEngine::stop()
+{
+	if (!isRunning)
+		return;
+
+	isRunning = false;
+}
+
+void CoreEngine::cleanUp()
+{
+	delete game;
+	window->Close();
 }
 
 void CoreEngine::start()

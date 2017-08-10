@@ -9,12 +9,10 @@
 #include "Camera.h"
 #include "RenderUtil.h"
 
-
 class GameObject;
 class Shader;
 class Camera;
 class Window;
-
 
 class RenderEngine
 {
@@ -48,9 +46,6 @@ public:
 	static void UnbindTextures();
 
 	static void SetClearColor(Vector3 color);
-	static void DrawGrid(int halfGridSize);
-
-	
 
 private:
 	void clearScreen();
@@ -70,6 +65,5 @@ private:
 	Window* mainWindow;
 
 	static bool isWireFrame;
-	
 };
 

@@ -14,6 +14,7 @@ MeshRenderer::MeshRenderer(Mesh* mesh, Material* material)
 
 MeshRenderer::~MeshRenderer()
 {
+	delete mesh;
 }
 
 void MeshRenderer::Render(const GameContext gameContext, Transform* transform, Shader* shader)

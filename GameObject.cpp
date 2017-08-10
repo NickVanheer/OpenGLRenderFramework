@@ -10,15 +10,15 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-	return;
-
-	//todo fix cleanup error
+	//return;
 
 	//Component Cleanup
 	for (Component* pComp : Components)
 	{
 		SafeDelete(pComp);
 	}
+	//TODO
+	//return;
 
 	//Object Cleanup
 	for (GameObject* pChild : Children)

@@ -12,7 +12,7 @@ float magnitude(Vector3 v) {
 Vector3 normalize(Vector3 v) {
 	float d = magnitude(v);
 	if (d == 0) {
-		printf("Cant normalize ZERO Vector3\n");
+		printf("Can't normalize ZERO Vector3\n");
 		d = 0.1f;
 	}
 	v.x /= d;
@@ -59,52 +59,52 @@ matrix operator*(matrix m1, matrix m2) {
 	return matrix(m1*m2.x, m1*m2.y, m1*m2.z);
 }
 
-float Vector3::length()
+float Vector3::length() const
 {
 	return sq4root(x * x + y * y + z * z);
 }
 
-float Vector3::dot(Vector3 vec2)
+float Vector3::dot(Vector3 vec2) const
 {
 	return x*vec2.x + y*vec2.y + z*vec2.z;
 }
 
-float Vector3::dot(Vector3 vec1, Vector3 vec2)
+float Vector3::dot(Vector3 vec1, Vector3 vec2) const
 {
 	return vec1.x*vec2.x + vec1.y*vec2.y + vec1.z*vec2.z;
 }
 
-Vector2 Vector3::getXY()
+Vector2 Vector3::getXY() const
 {
 	return Vector2(x, y);
 }
 
-Vector2 Vector3::getYZ()
+Vector2 Vector3::getYZ() const
 {
 	return Vector2(y, z);
 }
-
-Vector2 Vector3::getZX()
+ 
+Vector2 Vector3::getZX() const
 {
 	return Vector2(z,x);
 }
-
-Vector2 Vector3::getYX()
+ 
+Vector2 Vector3::getYX() const
 {
 	return Vector2(y, x);
 }
 
-Vector2 Vector3::getZY()
+Vector2 Vector3::getZY() const
 {
 	return Vector2(z,y);
 }
 
-Vector2 Vector3::getXZ()
+Vector2 Vector3::getXZ() const
 {
 	return Vector2(x, z);
 }
 
-Vector3 Vector3::cross(Vector3 vec)
+Vector3 Vector3::cross(Vector3 vec) const
 {
 	float x_ = y * vec.z - z * vec.y;
 	float y_ = z * vec.x - x * vec.z;
@@ -113,28 +113,26 @@ Vector3 Vector3::cross(Vector3 vec)
 	return Vector3(x_, y_, z_);
 }
 
-Vector3 Vector3::absolute()
+Vector3 Vector3::absolute() const
 {
 	return Vector3(abs(x), abs(y), abs(z));
 }
 
-Vector3 Vector3::lerp(Vector3 dest, float lerpFactor)
+Vector3 Vector3::lerp(Vector3 dest, float lerpFactor) const
 {
 	Vector3 a = dest - Vector3(x,y,z);
 	return (a * lerpFactor) + Vector3(x,y,z);
 }
 
-Vector3 Vector3::normalized()
+Vector3 Vector3::normalized() const
 {
 	float length = this->length();
 
-	return Vector3(x / length, y / length,z / length);
+	return Vector3(x / length, y / length, z / length);
 }
 
-Vector3 Vector3::rotate(float angle, Vector3 axis)
+Vector3 Vector3::rotateAroundAxis(float angle, Vector3 axis)
 {
-
-
 	float sinAngle = sin(-angle);
 	float cosAngle = cos(-angle);
 
@@ -149,25 +147,4 @@ Vector3 Vector3::rotate(float angle, Vector3 axis)
 	z = result.z;
 
 	return result;
-
-	float sinHalfAngle = sin(TO_RADIANS(angle / 2));
-	float cosHalfAngle = cos(TO_RADIANS(angle / 2));
-	//
-	float rX = axis.x * sinHalfAngle;
-	float rY = axis.y * sinHalfAngle;
-	float rZ = axis.z * sinHalfAngle;
-	float rW = cosHalfAngle;
-
-	Quaternion rotation = Quaternion(rX, rY, rZ, rW);
-	Quaternion conjugate = rotation.Conjugate();
-
-	//TODO: fix
-	Quaternion* w = rotation.Multiply(Vector3(x, y, z));
-	w->Multiply(conjugate);
-	x = w->x;
-	y - w->y;
-	z = w->z;
-	
-
-	//return Vector3(w->x, w->y, w->z);
 }

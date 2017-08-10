@@ -15,6 +15,10 @@ public:
 	void SetUp(Vector3 val) { up = val; }
 
 	void Move(Vector3 direction, float amount);
+	void MoveForward(float amount);
+	void MoveRight(float amount);
+	void MoveLeft(float amount);
+	void MoveUp(float amount);
 	Vector3 GetLeft();
 	Vector3 GetRight();
 

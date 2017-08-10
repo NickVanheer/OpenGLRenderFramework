@@ -18,6 +18,7 @@ public:
 	virtual void Update(GameContext gameContext);
 	void SetInputManager(InputManager* inputManager);
 	void SetMainCamera(Camera* mainCam);
+	void AddToGame(GameObject * GO);
 
 protected:
 	GameObject* root;

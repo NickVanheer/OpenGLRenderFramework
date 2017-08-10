@@ -20,10 +20,6 @@ public:
 	GLuint normalBuffer;
 
 	void CalculateNormals(std::vector<Vertex> & vertices, std::vector<unsigned int> indices);
-
 	int size;
-	// the global Assimp scene object
-	//const aiScene* scene;
-
 };
 

@@ -1,8 +1,7 @@
 #include "Time.h"
 
-double Time::delta;
 long Time::SECOND = 10000000; //1000000000L
-//1000000000L
+
 Time::Time()
 {
 }

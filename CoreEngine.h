@@ -20,7 +20,6 @@ public:
 
 	void CreateWindow(std::string title);
 
-	//TODO fix
 private:
 	bool isSingleFrame;
 	InputManager* inputManager;
@@ -29,6 +28,7 @@ private:
 	BaseGame* game;
 	bool isRunning = false;
 	double frameTime;
+	int frameRate;
 	int width;
 	int height;
 	RenderEngine* renderingEngine;

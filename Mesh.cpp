@@ -1,17 +1,12 @@
 #include "Mesh.h"
-
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <stdio.h>  
 
-
-
 Mesh::Mesh() 
 {
 }
-
 
 Mesh::~Mesh()
 {
@@ -22,7 +17,6 @@ void Mesh::AddVertices(std::vector<Vertex> vertices, std::vector<unsigned int> i
 	AddVertices(vertices, indices, false);
 }
 
-//todo hook up shader http://lazyfoo.net/tutorials/SDL/51_SDL_and_modern_opengl/ 
 void Mesh::AddVertices(std::vector<Vertex> vertices, std::vector<unsigned int> indices, bool calcNormals)
 {
 	if (calcNormals)
@@ -31,8 +25,6 @@ void Mesh::AddVertices(std::vector<Vertex> vertices, std::vector<unsigned int> i
 	}
 
 	size = indices.size();
-
-
 
 	//data
 	// VBO
@@ -45,7 +37,7 @@ void Mesh::AddVertices(std::vector<Vertex> vertices, std::vector<unsigned int> i
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gVAO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), indices.data(), GL_STATIC_DRAW);
 }
-float thing = 0.0f;
+
 void Mesh::Draw()
 {
 	glEnableVertexAttribArray(0);
@@ -90,7 +82,6 @@ void Mesh::CalculateNormals(std::vector<Vertex> & vertices, std::vector<unsigned
 	{
 		vertices.at(i).normal = vertices.at(i).normal.normalized();
 	}
-
 }
 
 

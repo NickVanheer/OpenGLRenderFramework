@@ -35,24 +35,24 @@ public:
 		return true;
 	}
 
-	float length();
+	float length() const;
 
-	float dot(Vector3 vec2);
-	float dot(Vector3 vec1, Vector3 vec2);
-	Vector3 cross(Vector3 vec);
-	Vector3 absolute();
-	Vector3 lerp(Vector3 dest, float lerpFactor);
+	float dot(Vector3 vec2) const;
+	float dot(Vector3 vec1, Vector3 vec2) const;
+	Vector3 cross(Vector3 vec) const;
+	Vector3 absolute() const;
+	Vector3 lerp(Vector3 dest, float lerpFactor) const;
 
-	Vector2 getXY();
-	Vector2 getYZ();
-	Vector2 getZX();
+	Vector2 getXY() const;
+	Vector2 getYZ() const;
+	Vector2 getZX() const;
 
-	Vector2 getYX();
-	Vector2 getZY();
-	Vector2 getXZ();
+	Vector2 getYX() const;
+	Vector2 getZY() const;
+	Vector2 getXZ() const;
 
-	Vector3 normalized();
-	Vector3 rotate(float angle, Vector3 axis);
+	Vector3 normalized() const; 
+	Vector3 rotateAroundAxis(float angle, Vector3 axis);
 
 };
 

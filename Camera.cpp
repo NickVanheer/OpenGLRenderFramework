@@ -11,7 +11,7 @@ Camera::Camera(float fov, float aspectRatio, float zNear, float zFar)
 	this->up = this->up.normalized();
 
 	this->projection = Matrix4();
-	this->projection.InitializePerspective(fov, aspectRatio, zFar, zNear); //paramter far near right
+	this->projection.InitializePerspective(fov, aspectRatio, zFar, zNear); 
 }
 
 Matrix4 Camera::GetViewProjection()
@@ -35,6 +35,27 @@ void Camera::Move(Vector3 direction, float amount)
 	position = position + (direction * amount);
 }
 
+void Camera::MoveForward(float amount)
+{
+	position = position + (GetForward() * amount);
+}
+
+void Camera::MoveLeft(float amount)
+{
+	position = position + (GetLeft() * amount);
+}
+
+void Camera::MoveRight(float amount)
+{
+	position = position + (GetRight() * amount);
+}
+
+
+void Camera::MoveUp(float amount)
+{
+	position = position + (GetUp() * amount);
+}
+
 Vector3 Camera::GetLeft()
 {
 	return forward.cross(up).normalized();
@@ -48,7 +69,7 @@ Vector3 Camera::GetRight()
 void Camera::RotateX(float angle)
 {
 	Vector3 horizontalAxis = Camera::YAXIS.cross(forward).normalized();
-	forward.rotate(angle, horizontalAxis);
+	forward.rotateAroundAxis(angle, horizontalAxis);
 
 	up = forward.cross(horizontalAxis).normalized();
 }
@@ -56,7 +77,7 @@ void Camera::RotateX(float angle)
 void Camera::RotateY(float angle)
 {
 	Vector3 horizontalAxis = Camera::YAXIS.cross(forward).normalized();
-	forward.rotate(angle, Vector3(0, 1, 0));
+	forward.rotateAroundAxis(angle, Vector3(0, 1, 0));
 
 	up = forward.cross(horizontalAxis).normalized();
 }
