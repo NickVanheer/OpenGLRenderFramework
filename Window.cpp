@@ -175,14 +175,19 @@ bool Window::IsCloseRequested()
 	return isCloseRequested;
 }
 
-int Window::GetWidth()
+const int Window::GetWidth() const
 {
 	return width;
 }
 
-int Window::GetHeight()
+const int Window::GetHeight() const
 {
 	return height;
+}
+
+const Vector2 Window::GetCenter() const
+{
+	return Vector2(GetWidth() / 2, GetHeight() / 2);
 }
 
 void Window::DrawText(string txt)
@@ -200,11 +205,6 @@ void Window::DrawText(string txt)
 	
 }
 
-Vector2 Window::GetCenter()
-{
-	return Vector2(GetWidth() / 2, GetHeight() / 2);
-}
-
 bool Window::LoadImage(SDL_Surface *& image, TCHAR* path)
 {
 	bool result = true;
@@ -216,7 +216,7 @@ bool Window::LoadImage(SDL_Surface *& image, TCHAR* path)
 	return result;
 }
 
-bool Window::SetInputManager(InputManager *& inputManager)
+bool Window::SetInputManager(std::shared_ptr<InputManager>  inputManager)
 {
 	this->inputManager = inputManager;
 	return false;

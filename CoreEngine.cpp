@@ -24,65 +24,52 @@ void CoreEngine::run()
 {
 	isRunning = true;
 	game->Initialize();
-	
+
+	//
 	double lastTime = time->getTime();
-	double unprocessedTime = 0;
+	double lastDrawTime = 0;
+	double unprocessedTime = frameTime;
 	int frames = 0;
 	double frameCounter = 0;
+	bool drawnFirstFrame = false;
 
 	GameContext gameContext = GameContext();
-	gameContext.deltaTime = (float)frameTime;
+	gameContext.renderEngine = renderingEngine;
 
+	float timeCache = 0;
 	while (isRunning)
 	{
-		double startTime = time->getTime();
-		double frameDelta = startTime - lastTime; //time between the last 2 frames
+		if (window->IsCloseRequested())
+			stop();
 
-		unprocessedTime += frameDelta;
-		frameCounter += frameDelta;
-		
-		//print fps every second
-		if (frameCounter >= 1.0)
+		double frameDelta = time->getTime() - lastTime; //time between the last 2 frames
+		lastTime = time->getTime();
+
+		timeCache += frameDelta;
+
+		if (timeCache > 0.01666f)
 		{
-			printf("fps: %i \n", frames);
-			frames = 0;
-			frameCounter = 0;
-		}
-
-		while (unprocessedTime > frameTime)
-		{
-			if (window->IsCloseRequested())
-				stop();
-
-			gameContext.deltaTime = frameDelta;
-			
+			double drawDelta = 0.016666f;
+			//
+			gameContext.deltaTime = drawDelta;
 			game->Input(gameContext);
 			game->Update(gameContext);
-
-			unprocessedTime -= frameTime;
-
+			//cout << frameDelta << endl;
 			renderingEngine->Render(game->GetRoot(), gameContext);
-			window->Render();
+			drawnFirstFrame = true;
 
-			frames++;
-
-			if (isSingleFrame)
-			{
-				cin.get(); //wait for a keypress
-				isRunning = false;
-			}
-
-			lastTime = startTime;
+			timeCache = 0;
 		}
 
+		window->Render();
 	}
 }
 
 CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game) : isSingleFrame(false)
 {
-	inputManager = new InputManager();
+	inputManager = std::make_shared<InputManager>();
 
-	window = new Window();
+	window = std::make_shared<Window>();
 	window->SetInputManager(inputManager);
 
 	this->time = new Time();

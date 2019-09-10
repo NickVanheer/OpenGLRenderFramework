@@ -6,11 +6,13 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "BasicShader.h"
+#include "GrassShader.h"
 #include "PhongShader.h"
 #include "ForwardAmbient.h"
 #include "Material.h"
 #include "MeshRenderer.h"
 #include "GameObject.h"
+#include <memory>
 
 /*
 Features:	
@@ -45,114 +47,111 @@ Game::Game() : BaseGame()
 	
 }
 
-
 Game::~Game()
 {
 	Cleanup();
 }
 
+Mesh* getGrid(float size, int rows, int columns)
+{
+	Mesh* mesh = new Mesh();
+	vector<Vertex> vertices;
+	vector<unsigned int> indices;
+
+	int index = 0;
+	for (int i = 0; i < columns; ++i)
+	{
+		for (int j = 0; j < rows; j++)
+		{
+			int s = i * size;
+			int t = j * size;
+			vertices.push_back(Vertex(s, 0, t, (float)j / (float)rows, (float)i / (float)columns));
+			vertices.push_back(Vertex(s + size, 0, t + size, (float)j / (float)columns, (float)i / (float)columns));
+			vertices.push_back(Vertex(s + size, 0, t, (float)j / (float)columns, (float)i / (float)columns));
+
+			vertices.push_back(Vertex(s, 0, t, (float)j / (float)rows, (float)i / (float)columns));
+			vertices.push_back(Vertex(s, 0, t + size, (float)j / (float)rows, (float)i / (float)columns));
+			vertices.push_back(Vertex(s + size, 0, t + size, (float)j / (float)rows, (float)i / (float)columns));
+
+			indices.push_back(index);
+			indices.push_back(index + 1);
+			indices.push_back(index + 2);
+
+			indices.push_back(index + 3);
+			indices.push_back(index + 4);
+			indices.push_back(index + 5);
+
+			index += 6;
+		}
+	
+	}
+
+	mesh->AddVertices(vertices, indices);
+	return mesh;
+}
 
 void Game::Initialize()
 {
 	BaseGame::Initialize();
 
-	//FLOOR
-	meshFloor = ResourceLoader::LoadModel("resources/models/bigplane.obj");
-
-	materialFloor = new Material("FloorMaterial");
-	materialFloor->Color = Vector3(0.8, 0.8, 0.8);
-	materialFloor->SpecularPower = 0.3;
-	materialFloor->SpecularIntensity = 1.2;
-	materialFloor->SetTexture(ResourceLoader::LoadTexture("resources/textures/Wall.png"));
-	materialFloor->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/Wall_Spec.png"));
-	materialFloor->SetNormalMap(ResourceLoader::LoadTexture("resources/textures/Wall_Normal.png"));
-
-	MeshRenderer* meshRendererFloor = new MeshRenderer(meshFloor, materialFloor);
-	
-	//
-	gOFloor = new GameObject();
-	gOFloor->AddComponent(meshRendererFloor);
-	gOFloor->GetTransform()->SetPosition(0, -1, 2);
-	gOFloor->GetTransform()->SetRotation(-0, 0, 0);
-								   
-	AddToGame(gOFloor);
-
-	//BOX
-	meshBox = ResourceLoader::LoadModel("resources/models/cube.obj");
+	//Box
+	meshBox = ResourceLoader::LoadModel("resources/models/teapotflip.obj");
 
 	//box material
 	materialBox = new Material("BoxMaterial");
 	materialBox->Color = Vector3(1.0, 1.0, 1.0);
 	materialBox->SpecularPower = 3;
-	materialBox->SpecularIntensity = 2;
+	materialBox->SpecularIntensity = 1;
 	materialBox->SetTexture(ResourceLoader::LoadTexture("resources/textures/TrainFloor.png"));
-	materialBox->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Spec.png"));
-	materialBox->SetNormalMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Normal.png"));
+	//materialBox->SetSpecularMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Spec.png")); //!
+	//materialBox->SetNormalMap(ResourceLoader::LoadTexture("resources/textures/TrainFloor_Normal.png"));
 
-	MeshRenderer* meshRendererBox = new MeshRenderer(meshBox, materialBox);
+	shared_ptr<MeshRenderer> meshRendererBox = make_shared<MeshRenderer>(meshBox, materialBox);
+	shared_ptr<GameObject> gameObjectBox = make_shared<GameObject>();
 
-	//
-	gOBox = new GameObject();
-	gOBox->AddComponent(meshRendererBox);
-	gOBox->GetTransform()->SetPosition(0, 0, 0);
-	//gO->GetTransform()->Scale(0, RandomFloat(1, 3) , 0);
-	AddToGame(gOBox);
-
+	//Box GameObject
+	//gameObjectBox = new GameObject();
+	gameObjectBox->AddComponent(meshRendererBox);
+	gameObjectBox->GetTransform().SetPosition(0, 15, 0);
+	gameObjectBox->GetTransform().Scale(5, 5 , 5);
+	AddToGame(gameObjectBox);
+	
 	//zoom out
-	mainCamera->Move(mainCamera->GetForward(), -2);
+	m_MainCamera->SetPosition(Vector3(0, 0, 0));
+	m_MainCamera->Move(m_MainCamera->GetForward(), -20);
+	m_MainCamera->MoveUp(6);
 }
+
 
 void Game::Input(GameContext gameContext)
 {
-	float movAmount = gameContext.deltaTime;
+	float movAmount = gameContext.deltaTime * 70;
 	float rotAmount = gameContext.deltaTime;
+	
+	if (m_InputManager->IsKeyDown(SDL_SCANCODE_W))
+		m_MainCamera->MoveForward(movAmount);
+	if (m_InputManager->IsKeyDown(SDL_SCANCODE_S))
+		m_MainCamera->MoveForward(-movAmount);
 
-	if (inputManager->IsKeyDown(SDL_SCANCODE_W))
-		mainCamera->MoveForward(movAmount);
-	if (inputManager->IsKeyDown(SDL_SCANCODE_S))
-		mainCamera->MoveForward(-movAmount);
+	if (m_InputManager->IsKeyDown(SDL_SCANCODE_A))
+		m_MainCamera->MoveLeft(movAmount);
+	if (m_InputManager->IsKeyDown(SDL_SCANCODE_D))
+		m_MainCamera->MoveRight(movAmount);
 
-	if (inputManager->IsKeyDown(SDL_SCANCODE_A))
-		mainCamera->MoveLeft(movAmount);
-	if (inputManager->IsKeyDown(SDL_SCANCODE_D))
-		mainCamera->MoveRight(movAmount);
+	if (m_InputManager->IsKeyDown(SDL_SCANCODE_LEFT))
+		m_MainCamera->RotateY(-rotAmount);
+	if (m_InputManager->IsKeyDown(SDL_SCANCODE_RIGHT))
+		m_MainCamera->RotateY(rotAmount);
 
-	if (inputManager->IsKeyDown(SDL_SCANCODE_LEFT))
-		mainCamera->RotateY(-rotAmount);
-	if (inputManager->IsKeyDown(SDL_SCANCODE_RIGHT))
-		mainCamera->RotateY(rotAmount);
-
-	if (inputManager->IsKeyDown(SDL_SCANCODE_UP))
-		mainCamera->MoveUp(movAmount);
-	if (inputManager->IsKeyDown(SDL_SCANCODE_DOWN))
-		mainCamera->MoveUp(-movAmount);
+	if (m_InputManager->IsKeyDown(SDL_SCANCODE_UP))
+		m_MainCamera->MoveUp(movAmount);
+	if (m_InputManager->IsKeyDown(SDL_SCANCODE_DOWN))
+		m_MainCamera->MoveUp(-movAmount);
 }
 
 void Game::Update(GameContext gameContext)
 {
 	BaseGame::Update(gameContext);
-	float y = gOFloor->GetTransform()->GetRotation().y;
-	gOFloor->GetTransform()->SetRotation(0, y + gameContext.deltaTime * 5, 0);
-}
-
-void Game::generateBoxes()
-{
-	int count = 1;
-	MeshRenderer* meshRendererBox = new MeshRenderer(meshBox, materialBox);
-
-	//
-	for (int i = 0; i < count; ++i)
-	{
-		for (int j = 0; j < count; j++)
-		{
-			GameObject* gO = new GameObject();
-			gO->AddComponent(meshRendererBox);
-			gO->GetTransform()->SetPosition(i * 4, 0, j * 4);
-			//gO->GetTransform()->Scale(0, RandomFloat(1, 3) , 0);
-			GetRoot()->AddChild(gO);
-		}
-	}
-
 }
 
 void Game::Cleanup()

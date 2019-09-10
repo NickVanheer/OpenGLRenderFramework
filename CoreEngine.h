@@ -1,4 +1,5 @@
 #include <string>
+#include <memory>
 
 #pragma once
 class Window;
@@ -22,8 +23,8 @@ public:
 
 private:
 	bool isSingleFrame;
-	InputManager* inputManager;
-	Window* window;
+	std::shared_ptr<InputManager> inputManager;
+	std::shared_ptr<Window> window;
 	Time* time;
 	BaseGame* game;
 	bool isRunning = false;

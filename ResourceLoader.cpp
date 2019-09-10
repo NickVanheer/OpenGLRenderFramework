@@ -10,12 +10,14 @@
 #include "Texture.h"
 #include "Mesh.h"
 
+/*
 #pragma comment(lib, "assimp.lib") 
 
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing fla
+#include "include/assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
 
+*/
 
 ResourceLoader::ResourceLoader()
 {
@@ -196,6 +198,7 @@ Mesh * ResourceLoader::LoadLegacy(string filename)
 	return newMesh;
 }
 
+#ifdef ASSIMP
 Mesh * ResourceLoader::LoadAssimp(string filename)
 {
 	//assimp loading
@@ -247,7 +250,9 @@ Mesh * ResourceLoader::LoadAssimp(string filename)
 	return newMesh;
 }
 
+#endif // ASSIMP
+
 Mesh * ResourceLoader::LoadModel(string filename)
 {
-	return LoadAssimp(filename);
+	return LoadLegacy(filename);
 }

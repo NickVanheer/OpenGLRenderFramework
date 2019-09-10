@@ -10,11 +10,11 @@ public:
 	bool IsEnabled;
 	Transform transform;
 
-	virtual void Initialize(const GameContext gameContext, Transform* transform);
-	virtual void Update(const GameContext gameContext, Transform* transform);
-	virtual void Render(const GameContext gameContext, Transform* transform, Shader* shader);
+	virtual void Initialize(const GameContext gameContext, Transform& transform);
+	virtual void Update(const GameContext gameContext, Transform& transform);
+	virtual void Render(const GameContext gameContext, Transform& transform, Shader* shader);
 
-	void SetTransform(Transform t);
+	void SetTransform(const Transform& t);
 
 };
 

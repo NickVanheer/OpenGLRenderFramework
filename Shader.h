@@ -20,6 +20,7 @@ public:
 	void CompileShader();
 	int AddUniform(string uniform);
 	void Bind();
+	void Unbind();
 
 	void SetUniformInt(string uniformName, int value);
 	void SetUniformFloat(string uniformName, float value);
@@ -37,7 +38,8 @@ public:
 	virtual Shader* GetInstance() = 0;
 	Material* GetMaterial();
 
-	virtual void UpdateUniforms(Transform* transform);
+	virtual void UpdateUniforms(Transform& transform, GameContext gameContext);
+	virtual void PostDrawUpdateUniforms(Transform& transform, GameContext gameContext);
 
 private:
 	void addProgram(std::string text, int type);

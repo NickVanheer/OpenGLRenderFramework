@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 
+class RenderEngine;
 float  sq4root(float a);
 
 
@@ -27,6 +28,7 @@ struct tridata {
 struct GameContext
 {
 	float deltaTime;
+	RenderEngine* renderEngine;
 };
 
 

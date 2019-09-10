@@ -10,6 +10,7 @@ public:
 	Vertex(Vector3 position, Vector3 texCoord, Vector3 normal);
 	Vertex(Vector3 position, Vector3 texCoord, Vector3 normal, Vector3 tangent);
 	Vertex(float x, float y, float z);
+	Vertex(float x, float y, float z, float texX, float texZ);
 
 	Vector3 GetPosition();
 	void SetPosition(Vector3 vec);

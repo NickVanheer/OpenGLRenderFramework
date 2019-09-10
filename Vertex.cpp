@@ -42,6 +42,12 @@ Vertex::Vertex(float x, float y, float z)
 	this->position = Vector3(x, y, z);
 }
 
+Vertex::Vertex(float x, float y, float z, float texX, float texZ)
+{
+	this->position = Vector3(x, y, z);
+	this->texCoord = Vector3(texX, 0, texZ);
+}
+
 Vector3 Vertex::GetPosition()
 {
 	return position;

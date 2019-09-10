@@ -7,7 +7,8 @@ class PhongShader :
 public:
 	PhongShader();
 	virtual ~PhongShader();
-	void UpdateUniforms(Transform* transform);
+	void UpdateUniforms(Transform& transform, GameContext gameContext);
+	void PostDrawUpdateUniforms(Transform& transform, GameContext gameContext);
 	static Vector3 AmbientLight;
 	static DirectionalLight LightDirectional;
 	void SetUniform(string uniformName, BaseLight baseLight);

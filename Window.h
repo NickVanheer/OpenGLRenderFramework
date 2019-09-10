@@ -2,6 +2,7 @@
 #include "Core.h"
 #include <tchar.h>
 #include <SDL_ttf.h>
+#include <memory>
 
 class InputManager;
 class Window
@@ -15,15 +16,15 @@ public:
 	void Close();
 	void DrawText(string text);
 	bool IsCloseRequested();
-	int GetWidth();
-	int GetHeight();
-	Vector2 GetCenter();
+	const int GetWidth() const;
+	const int GetHeight() const;
+	const Vector2 GetCenter() const;
 
 	//
 	void BindAsRenderTarget();
 
-	bool LoadImage(SDL_Surface *& image, TCHAR* path);
-	bool SetInputManager(InputManager *& inputManager);
+	bool LoadImage(SDL_Surface*& image, TCHAR* path);
+	bool SetInputManager(std::shared_ptr<InputManager> inputManager);
 
 	//The window we'll be rendering to
 	SDL_Window* gWindow = NULL;
@@ -45,7 +46,7 @@ public:
 
 private:
 	bool isCloseRequested = false;
-	InputManager* inputManager;
+	std::shared_ptr<InputManager> inputManager;
 	int width;
 	int height;
 

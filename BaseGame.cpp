@@ -2,33 +2,25 @@
 #include "GameObject.h"
 #include "BasicShader.h"
 
-BaseGame::BaseGame()
+BaseGame::BaseGame() 
 {
 
 }
 
-
 BaseGame::~BaseGame()
 {
-	delete root; //All root objects deleted here.
-	delete inputManager;
-	delete mainCamera;
+	delete m_Root; //All root objects deleted here.
 }
 
 GameObject * BaseGame::GetRoot()
 {
-	if (root == nullptr)
-		root = new GameObject();
-	return root;
+	if (m_Root == nullptr)
+		m_Root = new GameObject();
+	return m_Root;
 }
 
 void BaseGame::Initialize()
 {
-}
-
-void BaseGame::AddToGame(GameObject * GO)
-{
-	GetRoot()->AddChild(GO);
 }
 
 void BaseGame::Input(GameContext gameContext)
@@ -41,13 +33,18 @@ void BaseGame::Update(GameContext gameContext)
 	GetRoot()->Update(gameContext);
 }
 
-void BaseGame::SetInputManager(InputManager * inputManager)
+void BaseGame::SetInputManager(std::shared_ptr<InputManager> inputManager)
 {
-	this->inputManager = inputManager;
+	this->m_InputManager = inputManager;
 }
 
 void BaseGame::SetMainCamera(Camera* mainCam)
 {
-	this->mainCamera = mainCam;
+	this->m_MainCamera = mainCam;
+}
+
+void BaseGame::AddToGame(std::shared_ptr<GameObject> gameObject)
+{
+	GetRoot()->AddChild(gameObject);
 }
 

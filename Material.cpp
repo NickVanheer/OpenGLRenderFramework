@@ -92,6 +92,25 @@ void Material::SetTexture(Texture * texture)
 		UseTexture = true;
 }
 
+
+void Material::SetHeightMap(Texture* texture)
+{
+	this->HeightMapTexture = texture;
+	if (HeightMapTexture == nullptr)
+		useHeightMap = false;
+	else
+		useHeightMap = true;
+}
+
+void Material::SetDirectionTexture(Texture* texture)
+{
+	this->DirectionTexture = texture;
+	if (DirectionTexture == nullptr)
+		useDirectionMap = false;
+	else
+		useDirectionMap = true;
+}
+
 Texture * Material::GetTexture()
 {
 	return Textuur;
@@ -100,6 +119,16 @@ Texture * Material::GetTexture()
 Texture * Material::GetSpecularTexture()
 {
 	return SpecularMapTexture;
+}
+
+Texture* Material::GetHeightMap()
+{
+	return HeightMapTexture;
+}
+
+Texture* Material::GetDirectionTexture()
+{
+	return DirectionTexture;
 }
 
 Texture * Material::GetNormalMapTexture()

@@ -14,20 +14,12 @@ public:
 	void Input(GameContext gameContext);
 	virtual void Update(GameContext gameContext);
 	void Cleanup();
+	Mesh* getFloor();
 
 private:
-	//floor
-	Mesh* meshFloor;
-	Material* materialFloor;
-	GameObject* gOFloor;
-
 	//box
 	Mesh* meshBox;
 	Material* materialBox;
 	GameObject* gOBox;
-	vector<GameObject*> gOBoxes;
-
-	//generation
-	void generateBoxes();
 };
 

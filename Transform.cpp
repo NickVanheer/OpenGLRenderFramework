@@ -12,7 +12,13 @@ Transform::~Transform()
 {
 }
 
-Vector3 Transform::GetPosition()
+Transform Transform::operator=(const Transform & other)
+{
+	//TODO implement
+	return Transform();
+}
+
+Vector3 Transform::GetPosition() const
 {
 	return position;
 }
@@ -42,8 +48,7 @@ Matrix4 Transform::GetProjectedTransformation(Camera* camera)
 }
 */
 
-
-void Transform::SetPosition(Vector3 position)
+void Transform::SetPosition(const Vector3& position)
 {
 	this->position = position;
 }
@@ -53,12 +58,12 @@ void Transform::SetPosition(float x, float y, float z)
 	this->position = Vector3(x, y, z);
 }
 
-Vector3 Transform::GetRotation()
+Vector3 Transform::GetRotation() const
 {
 	return this->rotation;
 }
 
-void Transform::SetRotation(Vector3 rotation)
+void Transform::SetRotation(const Vector3& rotation)
 {
 	this->rotation = rotation;
 }
@@ -68,12 +73,12 @@ void Transform::SetRotation(float x, float y, float z)
 	this->rotation = Vector3(x, y, z);
 }
 
-Vector3 Transform::GetScale()
+Vector3 Transform::GetScale() const
 {
 	return this->scale;
 }
 
-void Transform::SetScale(Vector3 scale)
+void Transform::SetScale(const Vector3& scale)
 {
 	this->scale = scale;
 }

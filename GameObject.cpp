@@ -2,97 +2,64 @@
 
 
 
-GameObject::GameObject()
+GameObject::GameObject() : isInitialized(false), transform(Transform())
 {
-	transform = new	Transform();
 }
 
-
-GameObject::~GameObject()
-{
-	//return;
-
-	//Component Cleanup
-	for (Component* pComp : Components)
-	{
-		SafeDelete(pComp);
-	}
-	//TODO
-	//return;
-
-	//Object Cleanup
-	for (GameObject* pChild : Children)
-	{
-		SafeDelete(pChild);
-	}
-}
-
-void GameObject::AddChild(GameObject * obj)
+void GameObject::AddChild(shared_ptr<GameObject> obj)
 {
 	Children.push_back(obj);
 }
 
-void GameObject::RemoveChild(GameObject * obj)
-{
-}
-
-void GameObject::AddComponent(Component * pComp)
+void GameObject::AddComponent(shared_ptr<Component> pComp)
 {
 	//TODO: Complete and check for duplicates
 	Components.push_back(pComp);
 }
 
-void GameObject::RemoveComponent(Component * pComp)
-{
-}
-
-void GameObject::SetTransform(Transform* t)
+void GameObject::SetTransform(Transform& t)
 {
 	transform = t;
 }
 
-Transform* GameObject::GetTransform()
+Transform& GameObject::GetTransform() 
 {
 	return transform;
 }
 
 void GameObject::Initialize(const GameContext gameContext)
 {
-	if (initialized)
+	if (isInitialized)
 		return;
 
 	//User-Object Initialization
 	//Initialize(gameContext);
 
-
 	//Root-Component Initialization
-	for (Component* pComp : Components)
+	for (shared_ptr<Component> pComp : Components)
 	{
 		pComp->Initialize(gameContext, transform);
 	}
 
 	//Root-Object Initialization
-	for (GameObject* pChild : Children)
+	for (shared_ptr<GameObject> pChild : Children)
 	{
 		pChild->Initialize(gameContext);
 	}
 
-	initialized = true;
+	isInitialized = true;
 }
 
 void GameObject::Render(const GameContext gameContext, Shader* shader)
 {
-	//inherit draw in child class
-	//Draw(gameContext);
-
 	//Component draw
-	for (Component* pComp : Components)
+	for (shared_ptr<Component> pComp : Components)
 	{
 		pComp->Render(gameContext, transform, shader);
 	}
 
 	//children objects draw
-	for (GameObject* pChild : Children)
+	for (shared_ptr<GameObject> pChild : Children)
 	{
 		pChild->Render(gameContext, shader);
 	}
@@ -100,17 +67,14 @@ void GameObject::Render(const GameContext gameContext, Shader* shader)
 
 void GameObject::Update(const GameContext gameContext)
 {
-	//inherit Update in child class
-	//Update(gameContext);
-
 	//Component Update
-	for (Component* pComp : Components)
+	for (shared_ptr<Component> pComp : Components)
 	{
 		pComp->Update(gameContext, transform);
 	}
 
 	//children objects update
-	for (GameObject* pChild : Children)
+	for (shared_ptr<GameObject> pChild : Children)
 	{
 		pChild->Update(gameContext);
 	}

@@ -14,6 +14,7 @@ Shader::Shader()
 	if (gProgramID == 0)
 	{
 		//shader creation failed couldn't find decent value for shader
+		cout << "Error creating shader and assigning shader ID." << endl;
 	}
 
 }
@@ -54,8 +55,10 @@ void Shader::CompileShader()
 		printProgramLog(gProgramID);
 		//success = false;
 	}
+
 	
 	glValidateProgram(gProgramID);
+	printf("Compiled!\n");
 }
 
 int Shader::AddUniform(string uniform)
@@ -75,6 +78,11 @@ int Shader::AddUniform(string uniform)
 void Shader::Bind()
 {
 	glUseProgram(gProgramID);
+}
+
+void Shader::Unbind()
+{
+	glUseProgram(0);
 }
 
 void Shader::SetUniformInt(string uniformName, int value)
@@ -114,7 +122,18 @@ void Shader::SetUniformMatrix(string uniformName, Matrix4 value)
 
 	//glUniformMatrix4fv(uniforms.at(uniformName), 1, true, ma);
 
-	glUniformMatrix4fv(uniforms.at(uniformName), 1, true, value.CalculateSingleArray());
+	std::unordered_map<std::string, int>::const_iterator has = uniforms.find(uniformName); //TODO: remove because overhead?
+
+	if (has == uniforms.end())
+	{
+		//uniform not found
+		cout << uniformName << " not found" << endl;
+	}
+	else
+	{
+		glUniformMatrix4fv(uniforms.at(uniformName), 1, true, value.CalculateSingleArray());
+	}
+
 }
 
 void Shader::SetUniformBool(string uniformName, bool value)
@@ -132,8 +151,13 @@ Material* Shader::GetMaterial()
 	return material;
 }
 
-void Shader::UpdateUniforms(Transform* transform)
+void Shader::UpdateUniforms(Transform& transform, GameContext gameContext)
 {
+}
+
+void Shader::PostDrawUpdateUniforms(Transform& transform, GameContext gameContext)
+{
+	//assert(false);
 }
 
 

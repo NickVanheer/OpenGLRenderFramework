@@ -11,19 +11,19 @@ Component::~Component()
 {
 }
 
-void Component::Initialize(const GameContext gameContext, Transform* transform)
+void Component::Initialize(const GameContext gameContext, Transform& transform)
 {
 }
 
-void Component::Update(const GameContext gameContext, Transform* transform)
+void Component::Update(const GameContext gameContext, Transform& transform)
 {
 }
 
-void Component::Render(const GameContext gameContext, Transform* transform, Shader* shader)
+void Component::Render(const GameContext gameContext, Transform& transform, Shader* shader)
 {
 }
 
-void Component::SetTransform(Transform t)
+void Component::SetTransform(const Transform& t)
 {
 	transform = t;
 }

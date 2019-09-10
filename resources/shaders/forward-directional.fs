@@ -67,8 +67,6 @@ vec4 calcSpecularLight(BaseLight base, vec3 direction, vec3 normal, vec2 texCoor
 		float specularFactor = dot(directionToEye,reflectDirection);
 		specularFactor = pow(specularFactor, specularPower);
 		
-
-		
 		if(specularFactor > 0)
 		{
 			specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
@@ -102,8 +100,8 @@ void main()
 	
 	vec3 normal = normy;
 	
-	if(useNormalTexture)
-		normal = normalize(tbnMatrix * (2 * texture2D(NormalMapSampler,texCoord0.xy).xyz - 1));
+	//if(useNormalTexture)
+		//normal = normalize(tbnMatrix * (2 * texture2D(NormalMapSampler,texCoord0.xy).xyz - 1));
 
 	if(useSpecularTexture)
 		specularColor = calcSpecularLight(directionalLight.base, -directionalLight.direction, normal, texCoord0);

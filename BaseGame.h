@@ -1,10 +1,11 @@
 #pragma once
 #include "Helpers.h" //GameContext //TODO cleanup
 #include "Camera.h"
+#include <memory>
+
 class GameObject;
 class InputManager;
 class Shader;
-
 
 class BaseGame
 {
@@ -16,14 +17,17 @@ public:
 	virtual void Input(GameContext gameContext);
 	//virtual void Render(GameContext gameContext);
 	virtual void Update(GameContext gameContext);
-	void SetInputManager(InputManager* inputManager);
+	void SetInputManager(std::shared_ptr<InputManager> inputManager);
 	void SetMainCamera(Camera* mainCam);
-	void AddToGame(GameObject * GO);
+
+	void AddToGame(std::shared_ptr<GameObject> gO);
+
+
 
 protected:
-	GameObject* root;
-	InputManager* inputManager;
-	Camera* mainCamera;
+	GameObject* m_Root;
+	std::shared_ptr<InputManager> m_InputManager;
+	Camera* m_MainCamera;
 	//Shader* shader;
 
 };

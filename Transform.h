@@ -7,18 +7,19 @@ class Transform
 public:
 	Transform();
 	virtual ~Transform();
-	Vector3 GetPosition();
+	Transform operator=(const Transform& other);
+	Vector3 GetPosition() const;
 	Matrix4 GetTransformation();
 	//Matrix4 GetProjectedTransformation(Camera* camer);
-	void SetPosition(Vector3 translation);
+	void SetPosition(const Vector3& translation);
 	void SetPosition(float x, float y, float z);
 
-	Vector3 GetRotation();
-	void SetRotation(Vector3 rotation);
+	Vector3 GetRotation() const;
+	void SetRotation(const Vector3& rotation);
 	void SetRotation(float x, float y, float z);
 
-	Vector3 GetScale();
-	void SetScale(Vector3 scale);
+	Vector3 GetScale() const;
+	void SetScale(const Vector3& scale);
 	void SetScale(float x, float y, float z);
 	void Scale(float x, float y, float z);
 

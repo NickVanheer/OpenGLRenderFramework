@@ -63,27 +63,26 @@ PhongShader::~PhongShader()
 {
 }
 
-void PhongShader::UpdateUniforms(Transform* transform)
+void PhongShader::UpdateUniforms(Transform& transform, GameContext gameContext)
 {
 	glUseProgram(gProgramID);
 
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0 + 0);
 	if (material->UseTexture)
 		material->GetTexture()->Bind(diffuseTextureUnit);
 
-	glActiveTexture(GL_TEXTURE1);
+	glActiveTexture(GL_TEXTURE0 + 1);
 	if (material->UseSpecularMap)
 		material->GetSpecularTexture()->Bind(specTextureUnit);
 
-	glActiveTexture(GL_TEXTURE2);
+	glActiveTexture(GL_TEXTURE0 + 2);
 	if (material->UseNormalMap)
 		material->GetNormalMapTexture()->Bind(normalTextureUnit);
 
 	RenderEngine* r = GetRenderEngine();
 	Camera* c = r->GetMainCamera();
 	
-	
-	Matrix4 worldMatrix = transform->GetTransformation();
+	Matrix4 worldMatrix = transform.GetTransformation();
 	Matrix4 projectedMatrix = c->GetViewProjection().Multiply(worldMatrix);
 
 	SetUniformMatrix("transformProjected", projectedMatrix);
@@ -106,11 +105,27 @@ void PhongShader::UpdateUniforms(Transform* transform)
 	SetUniformVector("ambientLight", AmbientLight);
 	SetUniform("directionalLight", LightDirectional);
 
-
-
 	for (int i = 0; i < PointLights.size(); i++)
 		SetUniform("pointLights[" + to_string(i) + "]", PointLights.at(i));
 }
+
+void PhongShader::PostDrawUpdateUniforms(Transform& transform, GameContext gameContext)
+{
+	glActiveTexture(GL_TEXTURE0 + 0);
+	if (material->UseTexture)
+		material->GetTexture()->Bind(0);
+
+	glActiveTexture(GL_TEXTURE0 + 1);
+	if (material->UseSpecularMap)
+		material->GetSpecularTexture()->Bind(0);
+
+	glActiveTexture(GL_TEXTURE0 + 2);
+	if (material->UseNormalMap)
+		material->GetNormalMapTexture()->Bind(0);
+
+	glUseProgram(0);
+}
+
 
 void PhongShader::SetUniform(string uniformName, BaseLight baseLight)
 {

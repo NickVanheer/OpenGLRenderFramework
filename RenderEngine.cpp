@@ -5,9 +5,10 @@
 #include "ForwardDirectional.h"
 #include "ForwardPoint.h"
 #include "PhongShader.h"
+#include "GrassShader.h"
 #include "Window.h"
 
-bool RenderEngine::isWireFrame;
+bool RenderEngine::isWireFrame = false;
 RenderEngine::RenderEngine() 
 {
 	InitGraphics();
@@ -18,9 +19,9 @@ RenderEngine::RenderEngine()
 	mainCamera = new Camera((float)TO_RADIANS(70.0f), width / height, 0.01f, 1000.0f);
 	ambientLight = Vector3(0.4f, 0.4f, 0.4f);
 
-	Vector3 baseColor = Vector3(0.9, 0.9, 0.9);
-	float lightIntensity = 0.9f;
-	Vector3 dLightDirection = Vector3(-0.3f,1,-0.3f);
+	Vector3 baseColor = Vector3(1, 1, 1);
+	float lightIntensity = 0.1f;
+	Vector3 dLightDirection = Vector3(-0.3f,-0.3,-0.3f);
 	directionalLight = DirectionalLight(BaseLight(baseColor, lightIntensity), dLightDirection);
 	pointLight = PointLight(BaseLight(Vector3(0, 1, 0), 0.9f), Attenuation(0, 0, 1), Vector3(0, 0, -2), 100);
 	
@@ -39,6 +40,11 @@ RenderEngine::RenderEngine()
 	phongShader->SetRenderEngine(this);
 	PhongShader::AmbientLight = Vector3(0.1f, 0.1f, 0.1f);
 	PhongShader::LightDirectional = DirectionalLight(BaseLight(baseColor, lightIntensity), dLightDirection);
+
+	//GrassShader
+	GrassShader::AmbientLight = Vector3(0.1f, 0.1f, 0.1f);
+	GrassShader::LightDirectional = DirectionalLight(BaseLight(baseColor, lightIntensity), dLightDirection);
+	
 }
 
 void RenderEngine::Initialize()
@@ -55,12 +61,12 @@ RenderEngine::~RenderEngine()
 	return ambientLight;
 }
 
- DirectionalLight RenderEngine::GetDirectionalLight()
+ DirectionalLight& RenderEngine::GetDirectionalLight()
 {
 	return directionalLight;
 }
 
- PointLight RenderEngine::GetPointLight()
+ PointLight& RenderEngine::GetPointLight()
 {
 	return pointLight;
 }
@@ -89,14 +95,17 @@ void RenderEngine::Render(GameObject* object, GameContext gameContext)
 	return;
 
 	//Forward rendering
+	glDisable(GL_BLEND);
+	object->Render(gameContext, forwardAmbient);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE); //existing color times one, new color times one -> so add
 	glDepthMask(false); //disables writing to depth buffer [pixel check to draw or not draw]
 	glDepthFunc(GL_EQUAL); //only adds to pixel when exact same depth value -> only do lighting calculations for pixels that make it into the final image
 
 	//do multiple light passes here
-	//object->Render(gameContext, forwardDirectional);
-	//object->Render(gameContext, forwardPoint);
+	object->Render(gameContext, forwardDirectional);
+	object->Render(gameContext, forwardPoint);
 	
 	//reset
 	glDepthFunc(GL_LESS); //default, only add pixels when less
@@ -120,7 +129,7 @@ void RenderEngine::ClearScreen()
 void RenderEngine::InitGraphics()
 {
 	//return;
-	glClearColor(0.1f, 0.1f, 0.1f, 1.f);
+	glClearColor(0.7f, 0.7f, 0.7f, 1.f);
 
 	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
@@ -138,7 +147,7 @@ void RenderEngine::SetMainCamera(Camera* cam)
 	mainCamera = cam;
 }
 
-void RenderEngine::SetMainWindow(Window* window)
+void RenderEngine::SetMainWindow(std::shared_ptr<Window> window)
 {
 	this->mainWindow = window;
 }

@@ -8,6 +8,7 @@
 #include "Vertex.h"
 #include "Camera.h"
 #include "RenderUtil.h"
+#include <memory>
 
 class GameObject;
 class Shader;
@@ -29,11 +30,10 @@ public:
 	void SetMainCamera(Camera* cam);
 	Camera* GetMainCamera() const;
 	Vector3 GetAmbientLight();
-	DirectionalLight GetDirectionalLight();
-	PointLight GetPointLight();
+	DirectionalLight& GetDirectionalLight();
+	PointLight& GetPointLight();
 
-	void SetMainWindow(Window* cam);
-
+	void SetMainWindow(std::shared_ptr<Window> window);
 
 	//
 	static void ClearScreen();
@@ -56,13 +56,12 @@ private:
 	PointLight pointLight;
 	Camera* mainCamera;
 
-
 	Shader* phongShader;
 	Shader* forwardAmbient;
 	Shader* forwardDirectional;
 	Shader* forwardPoint;
 
-	Window* mainWindow;
+	std::shared_ptr<Window> mainWindow;
 
 	static bool isWireFrame;
 };
