@@ -1,7 +1,6 @@
 #pragma once
 #include "Core.h"
 #include <tchar.h>
-#include <SDL_ttf.h>
 #include <memory>
 
 class InputManager;
@@ -37,9 +36,6 @@ public:
 
 	//The window renderer
 	SDL_Renderer* gRenderer = NULL;
-
-	//Globally used font
-	TTF_Font *gFont = NULL;
 
 	//OpenGL context
 	SDL_GLContext gContext;

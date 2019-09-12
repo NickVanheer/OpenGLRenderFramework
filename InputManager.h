@@ -5,6 +5,8 @@ class InputManager
 public:
 	InputManager();
 	virtual ~InputManager();
+	InputManager(const InputManager& copy) = delete;
+	InputManager& operator=(const InputManager& assignment) = delete;
 
 	void KeyDown(unsigned int);
 	void KeyUp(unsigned int);
@@ -20,6 +22,8 @@ public:
 	void SetWindow(SDL_Window* window);
 	int GetMouseX();
 	int GetMouseY();
+
+	static InputManager& GetInstance();
 private:
 	bool keys[256];
 	bool isMouseDown;

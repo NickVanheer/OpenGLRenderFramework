@@ -22,15 +22,16 @@ public:
 	void CreateWindow(std::string title);
 
 private:
-	bool isSingleFrame;
-	std::shared_ptr<InputManager> inputManager;
-	std::shared_ptr<Window> window;
-	Time* time;
-	BaseGame* game;
-	bool isRunning = false;
-	double frameTime;
-	int frameRate;
-	int width;
-	int height;
+	bool m_isSingleFrame;
+	Time* m_time;
+	BaseGame* m_game;
+	bool m_isRunning = false;
+	double m_frameTime;
+	int m_frameRate;
+	int m_width;
+	int m_height;
 	RenderEngine* renderingEngine;
+
+	std::shared_ptr<InputManager> m_inputManager;
+	std::shared_ptr<Window> m_window;
 };

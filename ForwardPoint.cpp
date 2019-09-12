@@ -72,12 +72,12 @@ void ForwardPoint::UpdateUniforms(Transform* transform)
 		material->GetTexture()->Bind(0);
 
 
-	RenderEngine* r = GetRenderEngine();
-	Camera* c = r->GetMainCamera();
+	RenderEngine& r = GetRenderEngine();
+	const Camera& c = r.GetMainCamera();
 
 
 	Matrix4 worldMatrix = transform->GetTransformation();
-	Matrix4 projectedMatrix = c->GetViewProjection().Multiply(worldMatrix);
+	Matrix4 projectedMatrix = c.GetViewProjection().Multiply(worldMatrix);
 
 	SetUniformMatrix("model", worldMatrix);
 	SetUniformMatrix("MVP", projectedMatrix);
@@ -89,6 +89,6 @@ void ForwardPoint::UpdateUniforms(Transform* transform)
 	//SetUniformVector("eyePos", c->GetPosition());
 	
 	//point
-	SetUniform("pointLight", r->GetPointLight());
+	SetUniform("pointLight", r.GetPointLight());
 }
 

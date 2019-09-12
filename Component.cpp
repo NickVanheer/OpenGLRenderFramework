@@ -1,25 +1,10 @@
 #include "Component.h"
 
-
-
 Component::Component() : IsEnabled(true)
 {
 }
 
-
 Component::~Component()
-{
-}
-
-void Component::Initialize(const GameContext gameContext, Transform& transform)
-{
-}
-
-void Component::Update(const GameContext gameContext, Transform& transform)
-{
-}
-
-void Component::Render(const GameContext gameContext, Transform& transform, Shader* shader)
 {
 }
 

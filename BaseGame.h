@@ -14,11 +14,11 @@ public:
 	virtual ~BaseGame();
 	GameObject* GetRoot();
 	virtual void Initialize();
-	virtual void Input(GameContext gameContext);
+	virtual void Input(const GameContext& gameContext);
 	//virtual void Render(GameContext gameContext);
-	virtual void Update(GameContext gameContext);
+	virtual void Update(const GameContext& gameContext);
 	void SetInputManager(std::shared_ptr<InputManager> inputManager);
-	void SetMainCamera(Camera* mainCam);
+	void SetMainCamera(Camera& mainCam);
 
 	void AddToGame(std::shared_ptr<GameObject> gO);
 

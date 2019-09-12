@@ -123,7 +123,7 @@ void Game::Initialize()
 }
 
 
-void Game::Input(GameContext gameContext)
+void Game::Input(const GameContext& gameContext)
 {
 	float movAmount = gameContext.deltaTime * 70;
 	float rotAmount = gameContext.deltaTime;
@@ -149,7 +149,7 @@ void Game::Input(GameContext gameContext)
 		m_MainCamera->MoveUp(-movAmount);
 }
 
-void Game::Update(GameContext gameContext)
+void Game::Update(const GameContext& gameContext)
 {
 	BaseGame::Update(gameContext);
 }

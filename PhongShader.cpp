@@ -79,11 +79,11 @@ void PhongShader::UpdateUniforms(Transform& transform, GameContext gameContext)
 	if (material->UseNormalMap)
 		material->GetNormalMapTexture()->Bind(normalTextureUnit);
 
-	RenderEngine* r = GetRenderEngine();
-	Camera* c = r->GetMainCamera();
+	RenderEngine& r = GetRenderEngine();
+	const Camera& c = r.GetMainCamera();
 	
 	Matrix4 worldMatrix = transform.GetTransformation();
-	Matrix4 projectedMatrix = c->GetViewProjection().Multiply(worldMatrix);
+	Matrix4 projectedMatrix = c.GetViewProjection().Multiply(worldMatrix);
 
 	SetUniformMatrix("transformProjected", projectedMatrix);
 	SetUniformMatrix("transform", worldMatrix);
@@ -100,7 +100,7 @@ void PhongShader::UpdateUniforms(Transform& transform, GameContext gameContext)
 	//normal
 	SetUniformBool("useNormalTexture", material->UseNormalMap);
 
-	SetUniformVector("eyePos", c->GetPosition());
+	SetUniformVector("eyePos", c.GetPosition());
 
 	SetUniformVector("ambientLight", AmbientLight);
 	SetUniform("directionalLight", LightDirectional);

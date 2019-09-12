@@ -39,12 +39,12 @@ void ForwardAmbient::UpdateUniforms(Transform* transform)
 	if (material->UseTexture)
 		material->GetTexture()->Bind(diffuseTextureUnit);
 
-	RenderEngine* r = GetRenderEngine();
-	Camera* c = r->GetMainCamera();
+	RenderEngine& r = GetRenderEngine();
+	const Camera& c = r.GetMainCamera();
 
 	Matrix4 worldMatrix = transform->GetTransformation();
-	Matrix4 projectedMatrix = c->GetViewProjection().Multiply(worldMatrix);
+	Matrix4 projectedMatrix = c.GetViewProjection().Multiply(worldMatrix);
 
 	SetUniformMatrix("MVP", projectedMatrix);
-	SetUniformVector("ambientIntensity", GetRenderEngine()->GetAmbientLight()); //Get value from render engine
+	SetUniformVector("ambientIntensity", r.GetAmbientLight()); //Get value from render engine
 }

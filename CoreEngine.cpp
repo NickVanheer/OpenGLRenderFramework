@@ -1,34 +1,27 @@
 #include "Core.h"
 #include "CoreEngine.h"
 #include "Window.h"
-#include "Time.h"
-#include "BaseGame.h"
-#include "InputManager.h"
-#include <iostream>
 #include "RenderEngine.h"
 #include <thread>
 #include <chrono> 
 
 void CoreEngine::CreateWindow(string title)
 {
-	//TODO string to TCHAR
-	window->CreateWindow(width, height, "OpenGL Renderer");
+	m_window->CreateWindow(m_width, m_height, "OpenGL Renderer");
 	this->renderingEngine = new RenderEngine();
-	this->game->SetMainCamera(this->renderingEngine->GetMainCamera());
-	this->renderingEngine->SetMainWindow(window);
-	//TODO set game main camera
-
+	this->m_game->SetMainCamera(this->renderingEngine->GetMainCamera());
+	this->renderingEngine->SetMainWindow(m_window);
 }
 
 void CoreEngine::run()
 {
-	isRunning = true;
-	game->Initialize();
+	m_isRunning = true;
+	m_game->Initialize();
 
 	//
-	double lastTime = time->getTime();
+	double lastTime = m_time->getTime();
 	double lastDrawTime = 0;
-	double unprocessedTime = frameTime;
+	double unprocessedTime = m_frameTime;
 	int frames = 0;
 	double frameCounter = 0;
 	bool drawnFirstFrame = false;
@@ -37,13 +30,13 @@ void CoreEngine::run()
 	gameContext.renderEngine = renderingEngine;
 
 	float timeCache = 0;
-	while (isRunning)
+	while (m_isRunning)
 	{
-		if (window->IsCloseRequested())
+		if (m_window->IsCloseRequested())
 			stop();
 
-		double frameDelta = time->getTime() - lastTime; //time between the last 2 frames
-		lastTime = time->getTime();
+		double frameDelta = m_time->getTime() - lastTime; //time between the last 2 frames
+		lastTime = m_time->getTime();
 
 		timeCache += frameDelta;
 
@@ -52,34 +45,26 @@ void CoreEngine::run()
 			double drawDelta = 0.016666f;
 			//
 			gameContext.deltaTime = drawDelta;
-			game->Input(gameContext);
-			game->Update(gameContext);
+			m_game->Input(gameContext);
+			m_game->Update(gameContext);
 			//cout << frameDelta << endl;
-			renderingEngine->Render(game->GetRoot(), gameContext);
+			renderingEngine->Render(m_game->GetRoot(), gameContext);
 			drawnFirstFrame = true;
 
 			timeCache = 0;
 		}
 
-		window->Render();
+		m_window->Render();
 	}
 }
 
-CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game) : isSingleFrame(false)
+CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game) 
+	: m_isSingleFrame(false), m_time(new Time()), m_game(game), m_isRunning(false), m_frameTime(1.0 / framerate), m_frameRate(framerate), m_width(width), m_height(height)
 {
-	inputManager = std::make_shared<InputManager>();
+	m_inputManager = std::make_shared<InputManager>();
 
-	window = std::make_shared<Window>();
-	window->SetInputManager(inputManager);
-
-	this->time = new Time();
-	this->game = game;
-	this->width = width;
-	this->height = height;
-	this->frameRate = framerate;
-	this->frameTime = 1.0 / framerate;
-
-	isRunning = false;
+	m_window = std::make_shared<Window>();
+	m_window->SetInputManager(m_inputManager);
 }
 
 CoreEngine::~CoreEngine()
@@ -89,25 +74,25 @@ CoreEngine::~CoreEngine()
 
 void CoreEngine::stop()
 {
-	if (!isRunning)
+	if (!m_isRunning)
 		return;
 
-	isRunning = false;
+	m_isRunning = false;
 }
 
 void CoreEngine::cleanUp()
 {
-	delete game;
-	window->Close();
+	delete m_game;
+	m_window->Close();
 }
 
 void CoreEngine::start()
 {
-	if (isRunning)
+	if (m_isRunning)
 		return;
 
 	//game only kicks in once the graphics stuff has been loaded.
-	game->SetInputManager(inputManager);
+	m_game->SetInputManager(m_inputManager);
 
 	//start game loop
 	run();

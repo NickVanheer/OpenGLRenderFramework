@@ -152,9 +152,9 @@ void RenderEngine::SetMainWindow(std::shared_ptr<Window> window)
 	this->mainWindow = window;
 }
 
-Camera* RenderEngine::GetMainCamera() const
+Camera& RenderEngine::GetMainCamera() const
 {
-	return mainCamera;
+	return *mainCamera;
 }
 
 //TODO::fix

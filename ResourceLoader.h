@@ -16,6 +16,6 @@ public:
 	static Mesh * LoadModel(string filename);
 
 	static Mesh * LoadLegacy(string filename);
-	//static Mesh * LoadAssimp(string filename);
+	static Mesh * LoadAssimp(string filename);
 };
 

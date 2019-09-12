@@ -1,7 +1,5 @@
 #include "InputManager.h"
 
-
-
 InputManager::InputManager()
 {
 	for (int i = 0; i<256; i++)
@@ -11,7 +9,6 @@ InputManager::InputManager()
 
 	isMouseDown = false;
 }
-
 
 InputManager::~InputManager()
 {
@@ -76,5 +73,11 @@ int InputManager::GetMouseX()
 int InputManager::GetMouseY()
 {
 	return mouseY;
+}
+
+InputManager & InputManager::GetInstance()
+{
+	static InputManager instance; //only created the first time, doesn't get destroyed. 
+	return instance;
 }
 

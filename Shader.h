@@ -14,25 +14,25 @@ class Shader
 public:
 	Shader();
 	virtual ~Shader();
-	void AddVertexShader(string text);
-	void AddFragmentShader(string text);
-	void AddGeometryShader(string text);
+	void AddVertexShader(const string& text);
+	void AddFragmentShader(const string& text);
+	void AddGeometryShader(const string& text);
 	void CompileShader();
-	int AddUniform(string uniform);
+	int AddUniform(const string& uniform);
 	void Bind();
 	void Unbind();
 
-	void SetUniformInt(string uniformName, int value);
-	void SetUniformFloat(string uniformName, float value);
-	void SetUniformVector(string uniformName, Vector3 value);
-	void SetUniformMatrix(string uniformName, Matrix4 value);
-	void SetUniformBool(string uniformName, bool value);
+	void SetUniformInt(const string& uniformName, int value);
+	void SetUniformFloat(const string& uniformName, float value);
+	void SetUniformVector(const string& uniformName, Vector3 value);
+	void SetUniformMatrix(const string& uniformName, Matrix4 value);
+	void SetUniformBool(const string& uniformName, bool value);
 	void SetMaterial(Material* m);
-	void SetAttributeLocation(string attribName, int location);
+	void SetAttributeLocation(const string& attribName, int location);
 
 
 	//
-	RenderEngine* GetRenderEngine();
+	RenderEngine& GetRenderEngine() const;
 	void SetRenderEngine(RenderEngine* renderEngine);
 
 	virtual Shader* GetInstance() = 0;
@@ -42,7 +42,7 @@ public:
 	virtual void PostDrawUpdateUniforms(Transform& transform, GameContext gameContext);
 
 private:
-	void addProgram(std::string text, int type);
+	void addProgram(const string& text, int type);
 	void printShaderLog(GLuint shader);
 	void printProgramLog(GLuint shader);
 	std::unordered_map<string, int> uniforms;

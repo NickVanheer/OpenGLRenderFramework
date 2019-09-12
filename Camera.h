@@ -25,7 +25,7 @@ public:
 
 	void RotateX(float angle);
 	void RotateY(float angle);
-	Matrix4 GetViewProjection();
+	const Matrix4 GetViewProjection() const;
 private:
 	Vector3 position;
 	Vector3 forward;

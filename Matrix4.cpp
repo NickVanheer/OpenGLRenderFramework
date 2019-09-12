@@ -113,7 +113,7 @@ void Matrix4::InitializeRotation(float x, float y, float z)
 	CalculateSingleArray();
 }
 
-Matrix4 Matrix4::Multiply(Matrix4 input)
+Matrix4 Matrix4::Multiply(Matrix4 input) const
 {
 	Matrix4 res = Matrix4();
 
@@ -129,7 +129,7 @@ Matrix4 Matrix4::Multiply(Matrix4 input)
 		}
 	}
 
-	CalculateSingleArray();
+	//CalculateSingleArray();
 	return res;
 }
 //TODO: dimension right?

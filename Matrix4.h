@@ -16,7 +16,7 @@ public:
 	void InitializeRotation(float x, float y, float z);
 	void InitializePerspective(float fov, float aspectRatio, float zFar, float zNear);
 
-	Matrix4 Multiply(Matrix4 input);
+	Matrix4 Multiply(Matrix4 input) const;
 
 	float* CalculateSingleArray();
 

@@ -1,8 +1,6 @@
 #include "Core.h"
 #include "Texture.h"
 
-
-
 Texture::Texture(int id) : id(id)
 {
 }

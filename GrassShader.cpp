@@ -103,14 +103,14 @@ void GrassShader::UpdateUniforms(Transform* transform, GameContext gameContext)
 	*/
 
 	RenderEngine* r = gameContext.renderEngine;
-	Camera* c = r->GetMainCamera();
+	const Camera& c = r->GetMainCamera();
 
 	Matrix4 worldMatrix = transform->GetTransformation();
-	Matrix4 projectedMatrix = c->GetViewProjection().Multiply(worldMatrix);
+	Matrix4 projectedMatrix = c.GetViewProjection().Multiply(worldMatrix);
 
 	SetUniformMatrix("transformProjected", projectedMatrix);
 	SetUniformFloat("m_Time", m_Time);
-	SetUniformVector("eyePos", c->GetPosition());
+	SetUniformVector("eyePos", c.GetPosition());
 
 	SetUniformMatrix("transform", worldMatrix);
 

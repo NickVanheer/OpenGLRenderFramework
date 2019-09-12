@@ -28,7 +28,8 @@ public:
 
 	//
 	void SetMainCamera(Camera* cam);
-	Camera* GetMainCamera() const;
+	Camera& GetMainCamera() const;
+
 	Vector3 GetAmbientLight();
 	DirectionalLight& GetDirectionalLight();
 	PointLight& GetPointLight();

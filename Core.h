@@ -1,16 +1,15 @@
 #pragma once
 #include <SDL.h>
-//include other headers like mouse etc?
-#define GLEW_STATIC
-#include "glew.h"
-#include "RenderUtil.h"
-#include "glut.h"  // in glut-3.7.6-bin
-#include "Helpers.h"
+#include <iostream>
+#include <math.h>
 #include <string>
+#include "include\GL\glew.h"
+//#define GLEW_STATIC
+#include "RenderUtil.h"
+#include "Helpers.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "ResourceLoader.h"
-#include <math.h>
 #include "Texture.h"
 #include "Main.h"
 #include "InputManager.h"
@@ -55,7 +54,6 @@ static std::vector<float> GetFloatVector(std::vector<Vertex> vertices)
 		verts.push_back(vertices.at(i).tangent.x);
 		verts.push_back(vertices.at(i).tangent.y);
 		verts.push_back(vertices.at(i).tangent.z);
-
 	}
 
 	return verts;

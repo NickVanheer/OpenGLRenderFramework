@@ -7,7 +7,6 @@
 class RenderEngine;
 float  sq4root(float a);
 
-
 double TO_RADIANS(float degrees);
 float RangeConverter(float oldValue, float oldMin, float oldMax, float newMin, float newMax);
 
@@ -31,11 +30,9 @@ struct GameContext
 	RenderEngine* renderEngine;
 };
 
-
 #pragma region helpers
 
 #pragma endregion
-
 
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 

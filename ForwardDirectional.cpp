@@ -84,11 +84,11 @@ void ForwardDirectional::UpdateUniforms(Transform* transform)
 		material->GetNormalMapTexture()->Bind(normalTextureUnit);
 
 
-	RenderEngine* r = GetRenderEngine();
-	Camera* c = r->GetMainCamera();
+	RenderEngine& r = GetRenderEngine();
+	const Camera& c = r.GetMainCamera();
 
 	Matrix4 worldMatrix = transform->GetTransformation();
-	Matrix4 projectedMatrix = c->GetViewProjection().Multiply(worldMatrix);
+	Matrix4 projectedMatrix = c.GetViewProjection().Multiply(worldMatrix);
 
 	SetUniformMatrix("model", worldMatrix);
 	SetUniformMatrix("MVP", projectedMatrix);
@@ -105,7 +105,7 @@ void ForwardDirectional::UpdateUniforms(Transform* transform)
 	//normal
 	SetUniformBool("useNormalTexture", material->UseNormalMap);
 
-	SetUniformVector("eyePos", c->GetPosition());
-	SetUniform("directionalLight", r->GetDirectionalLight());
+	SetUniformVector("eyePos", c.GetPosition());
+	SetUniform("directionalLight", r.GetDirectionalLight());
 }
 

@@ -14,7 +14,7 @@ Camera::Camera(float fov, float aspectRatio, float zNear, float zFar)
 	this->projection.InitializePerspective(fov, aspectRatio, zFar, zNear); 
 }
 
-Matrix4 Camera::GetViewProjection()
+const Matrix4 Camera::GetViewProjection() const
 {
 	Matrix4 cameraRotation;
 	cameraRotation.InitializeRotation(forward, up);

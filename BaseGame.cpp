@@ -23,12 +23,12 @@ void BaseGame::Initialize()
 {
 }
 
-void BaseGame::Input(GameContext gameContext)
+void BaseGame::Input(const GameContext& gameContext)
 {
 	//root->Input(gameContext);
 }
 
-void BaseGame::Update(GameContext gameContext)
+void BaseGame::Update(const GameContext& gameContext)
 {
 	GetRoot()->Update(gameContext);
 }
@@ -38,9 +38,9 @@ void BaseGame::SetInputManager(std::shared_ptr<InputManager> inputManager)
 	this->m_InputManager = inputManager;
 }
 
-void BaseGame::SetMainCamera(Camera* mainCam)
+void BaseGame::SetMainCamera(Camera& mainCam)
 {
-	this->m_MainCamera = mainCam;
+	this->m_MainCamera = &mainCam;
 }
 
 void BaseGame::AddToGame(std::shared_ptr<GameObject> gameObject)

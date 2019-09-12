@@ -10,14 +10,18 @@
 #include "Texture.h"
 #include "Mesh.h"
 
-/*
-#pragma comment(lib, "assimp.lib") 
 
+#pragma comment(lib, "assimp-vc140-mt.lib") 
+
+/*
 #include "include/assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
-
 */
+
+#include "include\assimp\Importer.hpp"
+#include "include\assimp\postprocess.h"
+#include "include\assimp\scene.h"
 
 ResourceLoader::ResourceLoader()
 {
@@ -71,7 +75,6 @@ string ResourceLoader::LoadShader(string filename)
 
 	return text;
 }
-
 
 Mesh * ResourceLoader::LoadLegacy(string filename)
 {
@@ -198,7 +201,6 @@ Mesh * ResourceLoader::LoadLegacy(string filename)
 	return newMesh;
 }
 
-#ifdef ASSIMP
 Mesh * ResourceLoader::LoadAssimp(string filename)
 {
 	//assimp loading
@@ -250,9 +252,7 @@ Mesh * ResourceLoader::LoadAssimp(string filename)
 	return newMesh;
 }
 
-#endif // ASSIMP
-
 Mesh * ResourceLoader::LoadModel(string filename)
 {
-	return LoadLegacy(filename);
+	return LoadAssimp(filename);
 }

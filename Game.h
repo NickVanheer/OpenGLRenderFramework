@@ -11,8 +11,8 @@ public:
 	Game();
 	virtual ~Game();
 	void Initialize();
-	void Input(GameContext gameContext);
-	virtual void Update(GameContext gameContext);
+	void Input(const GameContext& gameContext);
+	virtual void Update(const GameContext& gameContext) override;
 	void Cleanup();
 	Mesh* getFloor();
 

@@ -1,8 +1,6 @@
 #include "Core.h"
 #include "Shader.h"
 
-
-
 Shader::Shader()
 {
 	//Success flag
@@ -16,26 +14,24 @@ Shader::Shader()
 		//shader creation failed couldn't find decent value for shader
 		cout << "Error creating shader and assigning shader ID." << endl;
 	}
-
 }
-
 
 Shader::~Shader()
 {
 	delete material;
 }
 
-void Shader::AddVertexShader(string text)
+void Shader::AddVertexShader(const string& text)
 {
 	addProgram(text, GL_VERTEX_SHADER);
 }
 
-void Shader::AddFragmentShader(string text)
+void Shader::AddFragmentShader(const string& text)
 {
 	addProgram(text, GL_FRAGMENT_SHADER);
 }
 
-void Shader::AddGeometryShader(string text)
+void Shader::AddGeometryShader(const string& text)
 {
 	addProgram(text, GL_GEOMETRY_SHADER);
 }
@@ -61,7 +57,7 @@ void Shader::CompileShader()
 	printf("Compiled!\n");
 }
 
-int Shader::AddUniform(string uniform)
+int Shader::AddUniform(const string& uniform)
 {
 	int uniformLocation = glGetUniformLocation(gProgramID, uniform.c_str());
 	
@@ -72,7 +68,6 @@ int Shader::AddUniform(string uniform)
 	uniforms.insert(newUniform);
 
 	return uniformLocation;
-
 }
 
 void Shader::Bind()
@@ -85,13 +80,13 @@ void Shader::Unbind()
 	glUseProgram(0);
 }
 
-void Shader::SetUniformInt(string uniformName, int value)
+void Shader::SetUniformInt(const string& uniformName, int value)
 {
 	//TODO: check if key exists
 	glUniform1i(uniforms.at(uniformName), value);
 }
 
-void Shader::SetUniformFloat(string uniformName, float value)
+void Shader::SetUniformFloat(const string& uniformName, float value)
 {
 	//make sure program is in use (Bind())
 	//TODO: check if key exists
@@ -100,19 +95,19 @@ void Shader::SetUniformFloat(string uniformName, float value)
 
 }
 
-void Shader::SetAttributeLocation(string attribName, int location)
+void Shader::SetAttributeLocation(const string& attribName, int location)
 {
 	glBindAttribLocation(gProgramID, location, attribName.c_str());
 }
 
 
-void Shader::SetUniformVector(string uniformName, Vector3 value)
+void Shader::SetUniformVector(const string& uniformName, Vector3 value)
 {
 	//TODO: check if key exists
 	glUniform3f(uniforms.at(uniformName), value.x, value.y, value.z);
 }
 
-void Shader::SetUniformMatrix(string uniformName, Matrix4 value)
+void Shader::SetUniformMatrix(const string& uniformName, Matrix4 value)
 {
 	//third paramater->transpose
 	float ma[16] = {	1,0,0,1,
@@ -136,7 +131,7 @@ void Shader::SetUniformMatrix(string uniformName, Matrix4 value)
 
 }
 
-void Shader::SetUniformBool(string uniformName, bool value)
+void Shader::SetUniformBool(const string& uniformName, bool value)
 {
 	glUniform1i(uniforms.at(uniformName), value);
 }
@@ -161,7 +156,7 @@ void Shader::PostDrawUpdateUniforms(Transform& transform, GameContext gameContex
 }
 
 
-void Shader::addProgram(std::string text, int type)
+void Shader::addProgram(const std::string& text, int type)
 {
 	int shader = glCreateShader(type); //actually a gluint
 
@@ -230,9 +225,9 @@ void Shader::printShaderLog(GLuint shader)
 	}
 }
 
-RenderEngine* Shader::GetRenderEngine()
+RenderEngine& Shader::GetRenderEngine() const
 {
-	return renderEngine;
+	return *renderEngine;
 }
 void Shader::SetRenderEngine(RenderEngine* renderEngine)
 {
