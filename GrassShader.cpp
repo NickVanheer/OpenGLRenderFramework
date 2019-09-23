@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "GrassShader.h"
-
 
 Vector3 GrassShader::AmbientLight;
 DirectionalLight GrassShader::LightDirectional;

@@ -1,7 +1,5 @@
 #pragma once
-#include "Core.h"
-#include <tchar.h>
-#include <memory>
+#include "pch.h"
 
 class InputManager;
 class Window
@@ -10,10 +8,10 @@ public:
 	Window();
 	~Window();
 
-	void CreateWindow(int width, int height, TCHAR* title);
+	void CreateWindow(int width, int height, const char* title);
 	void Render();
 	void Close();
-	void DrawText(string text);
+	void DrawText(std::string text);
 	bool IsCloseRequested();
 	const int GetWidth() const;
 	const int GetHeight() const;
@@ -22,7 +20,6 @@ public:
 	//
 	void BindAsRenderTarget();
 
-	bool LoadImage(SDL_Surface*& image, TCHAR* path);
 	bool SetInputManager(std::shared_ptr<InputManager> inputManager);
 
 	//The window we'll be rendering to

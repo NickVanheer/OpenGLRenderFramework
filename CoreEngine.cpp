@@ -1,13 +1,14 @@
-#include "Core.h"
+#include "pch.h"
+
 #include "CoreEngine.h"
 #include "Window.h"
 #include "RenderEngine.h"
-#include <thread>
-#include <chrono> 
+#include "BaseGame.h"
+#include "InputManager.h"
 
-void CoreEngine::CreateWindow(string title)
+void CoreEngine::CreateWindow(const char* title)
 {
-	m_window->CreateWindow(m_width, m_height, "OpenGL Renderer");
+	m_window->CreateWindow(m_width, m_height, title);
 	this->renderingEngine = new RenderEngine();
 	this->m_game->SetMainCamera(this->renderingEngine->GetMainCamera());
 	this->renderingEngine->SetMainWindow(m_window);
@@ -19,7 +20,9 @@ void CoreEngine::run()
 	m_game->Initialize();
 
 	//
-	double lastTime = m_time->getTime();
+	long lastTime = m_Time.getTime();
+	double delta = 0.0;
+
 	double lastDrawTime = 0;
 	double unprocessedTime = m_frameTime;
 	int frames = 0;
@@ -35,12 +38,13 @@ void CoreEngine::run()
 		if (m_window->IsCloseRequested())
 			stop();
 
-		double frameDelta = m_time->getTime() - lastTime; //time between the last 2 frames
-		lastTime = m_time->getTime();
+		long frameDelta = m_Time.getTime() - lastTime; //time between the last 2 frames
+		float frameDeltaSmall = frameDelta / 100000.0f;
+		lastTime = m_Time.getTime();
 
-		timeCache += frameDelta;
+		timeCache += frameDeltaSmall;
 
-		if (timeCache > 0.01666f)
+		if (timeCache > 1)
 		{
 			double drawDelta = 0.016666f;
 			//
@@ -52,14 +56,14 @@ void CoreEngine::run()
 			drawnFirstFrame = true;
 
 			timeCache = 0;
+			m_window->Render();
 		}
 
-		m_window->Render();
 	}
 }
 
 CoreEngine::CoreEngine(int width, int height, int framerate, BaseGame* game) 
-	: m_isSingleFrame(false), m_time(new Time()), m_game(game), m_isRunning(false), m_frameTime(1.0 / framerate), m_frameRate(framerate), m_width(width), m_height(height)
+	: m_isSingleFrame(false), m_Time(Time()), m_game(game), m_isRunning(false), m_frameTime(1.0 / framerate), m_frameRate(framerate), m_width(width), m_height(height)
 {
 	m_inputManager = std::make_shared<InputManager>();
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "pch.h"
 #include "Helpers.h"
 #include <tchar.h>
 

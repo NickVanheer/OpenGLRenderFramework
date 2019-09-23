@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ForwardPoint.h"
 
 ForwardPoint::ForwardPoint() : Shader()

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ForwardDirectional.h"
 
 ForwardDirectional::ForwardDirectional() : Shader()

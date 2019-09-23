@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Mesh.h"
 #include <iostream>
 #include <fstream>
@@ -10,14 +11,15 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
+	glDeleteBuffers(1, &gVBO);
 }
 
-void Mesh::AddVertices(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+void Mesh::AddVertices(std::vector<Vertex> vertices, const std::vector<unsigned int>& indices)
 {
 	AddVertices(vertices, indices, false);
 }
 
-void Mesh::AddVertices(std::vector<Vertex> vertices, std::vector<unsigned int> indices, bool calcNormals)
+void Mesh::AddVertices(std::vector<Vertex> vertices, const std::vector<unsigned int>& indices, bool calcNormals)
 {
 	if (calcNormals)
 	{

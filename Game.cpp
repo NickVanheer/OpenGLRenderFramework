@@ -1,10 +1,8 @@
-#include "Core.h" //Always at the top
+#include "pch.h"
 
 #include "Game.h"
 #include "Mesh.h"
-#include "Helpers.h"
-#include "Shader.h"
-#include "Camera.h"
+
 #include "BasicShader.h"
 #include "GrassShader.h"
 #include "PhongShader.h"
@@ -12,7 +10,7 @@
 #include "Material.h"
 #include "MeshRenderer.h"
 #include "GameObject.h"
-#include <memory>
+
 
 /*
 Features:	
@@ -50,44 +48,6 @@ Game::Game() : BaseGame()
 Game::~Game()
 {
 	Cleanup();
-}
-
-Mesh* getGrid(float size, int rows, int columns)
-{
-	Mesh* mesh = new Mesh();
-	vector<Vertex> vertices;
-	vector<unsigned int> indices;
-
-	int index = 0;
-	for (int i = 0; i < columns; ++i)
-	{
-		for (int j = 0; j < rows; j++)
-		{
-			int s = i * size;
-			int t = j * size;
-			vertices.push_back(Vertex(s, 0, t, (float)j / (float)rows, (float)i / (float)columns));
-			vertices.push_back(Vertex(s + size, 0, t + size, (float)j / (float)columns, (float)i / (float)columns));
-			vertices.push_back(Vertex(s + size, 0, t, (float)j / (float)columns, (float)i / (float)columns));
-
-			vertices.push_back(Vertex(s, 0, t, (float)j / (float)rows, (float)i / (float)columns));
-			vertices.push_back(Vertex(s, 0, t + size, (float)j / (float)rows, (float)i / (float)columns));
-			vertices.push_back(Vertex(s + size, 0, t + size, (float)j / (float)rows, (float)i / (float)columns));
-
-			indices.push_back(index);
-			indices.push_back(index + 1);
-			indices.push_back(index + 2);
-
-			indices.push_back(index + 3);
-			indices.push_back(index + 4);
-			indices.push_back(index + 5);
-
-			index += 6;
-		}
-	
-	}
-
-	mesh->AddVertices(vertices, indices);
-	return mesh;
 }
 
 void Game::Initialize()

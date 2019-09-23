@@ -1,6 +1,7 @@
 #pragma once
 #include "Shader.h"
 #include "RenderUtil.h"
+
 class PhongShader :
 	public Shader
 {
@@ -11,11 +12,11 @@ public:
 	void PostDrawUpdateUniforms(Transform& transform, GameContext gameContext);
 	static Vector3 AmbientLight;
 	static DirectionalLight LightDirectional;
-	void SetUniform(string uniformName, BaseLight baseLight);
-	void SetUniform(string uniformName, DirectionalLight directionalLight);
-	void SetUniform(string uniformName, PointLight pointLight);
+	void SetUniform(const string& uniformName, BaseLight baseLight);
+	void SetUniform(const string& uniformName, DirectionalLight directionalLight);
+	void SetUniform(const string& uniformName, PointLight pointLight);
 
-	static const int MAX_POINT_LIGHTS = 4;
+	static const int MAX_POINT_LIGHTS = 5;
 	static std::vector<PointLight> PointLights;
 	static void SetPointLights(std::vector<PointLight> pointLights);
 	virtual Shader* GetInstance();

@@ -1,6 +1,7 @@
+#include "pch.h"
+
 #include "Vector2.h"
 #include <math.h>
-
 
 Vector2::Vector2()
 {

@@ -1,6 +1,5 @@
 #pragma once
-#include "Core.h"
-#include <string>
+
 using namespace std;
 class Texture;
 class Mesh;
@@ -11,11 +10,11 @@ public:
 	ResourceLoader();
 	virtual ~ResourceLoader();
 
-	static Texture * LoadTexture(string filename);
-	static string LoadShader(string filename);
-	static Mesh * LoadModel(string filename);
+	static Texture * LoadTexture(const string& filename);
+	static string LoadShader(const string& filename);
+	static Mesh * LoadModel(const string& filename); 
 
-	static Mesh * LoadLegacy(string filename);
-	static Mesh * LoadAssimp(string filename);
+	static Mesh * LoadLegacy(const string& filename);
+	static Mesh * LoadAssimp(const string& filename);
 };
 

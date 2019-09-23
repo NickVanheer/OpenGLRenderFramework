@@ -1,4 +1,5 @@
-#include "Core.h"
+#include "pch.h"
+#include "include\GL\glew.h"
 #include "Texture.h"
 
 Texture::Texture(int id) : id(id)

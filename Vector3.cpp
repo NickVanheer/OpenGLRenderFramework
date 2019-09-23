@@ -1,10 +1,9 @@
 #pragma once
-#include <stdio.h>
-#include <math.h>
-
+#include "pch.h"
 #include "Vector3.h"
+#include <math.h>
 #include "Quaternion.h"
-
+//#include <stdio.h>
 
 float magnitude(Vector3 v) {
 	return (float)sqrt(sq4root(v.x) + sq4root(v.y) + sq4root(v.z));

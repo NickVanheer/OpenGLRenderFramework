@@ -1,10 +1,9 @@
-#include <string>
+#pragma once
+#include "pch.h"
+
 #include <unordered_map>
-#include "Vector3.h"
-#include "Matrix4.h"
 #include "Material.h"
 #include "RenderEngine.h"
-#pragma once
 
 class RenderEngine;
 
@@ -29,7 +28,6 @@ public:
 	void SetUniformBool(const string& uniformName, bool value);
 	void SetMaterial(Material* m);
 	void SetAttributeLocation(const string& attribName, int location);
-
 
 	//
 	RenderEngine& GetRenderEngine() const;

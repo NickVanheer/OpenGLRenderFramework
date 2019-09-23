@@ -1,9 +1,11 @@
+#pragma once
+
 #include <string>
 #include <memory>
+#include "Time.h"
 
-#pragma once
 class Window;
-class Time;
+
 class BaseGame;
 class InputManager;
 class RenderEngine;
@@ -19,11 +21,11 @@ public:
 	void run();
 	void cleanUp();
 
-	void CreateWindow(std::string title);
+	void CreateWindow(const char* title);
 
 private:
 	bool m_isSingleFrame;
-	Time* m_time;
+	Time m_Time;
 	BaseGame* m_game;
 	bool m_isRunning = false;
 	double m_frameTime;

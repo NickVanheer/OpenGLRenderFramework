@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PhongShader.h"
 #include "Transform.h"
 
@@ -127,21 +128,21 @@ void PhongShader::PostDrawUpdateUniforms(Transform& transform, GameContext gameC
 }
 
 
-void PhongShader::SetUniform(string uniformName, BaseLight baseLight)
+void PhongShader::SetUniform(const string& uniformName, BaseLight baseLight)
 {
 	SetUniformVector(uniformName + ".color", baseLight.color);
 	SetUniformFloat(uniformName + ".intensity", baseLight.intensity);
 	//glUniform1i(uniforms.at(uniformName), value);
 }
 
-void PhongShader::SetUniform(string uniformName, DirectionalLight directionalLight)
+void PhongShader::SetUniform(const string&  uniformName, DirectionalLight directionalLight)
 {
 	SetUniform(uniformName + ".base", directionalLight.base);
 	SetUniformVector(uniformName + ".direction", directionalLight.direction);
 	//glUniform1i(uniforms.at(uniformName), value);
 }
 
-void PhongShader::SetUniform(string uniformName, PointLight pointLight)
+void PhongShader::SetUniform(const string&  uniformName, PointLight pointLight)
 {
 	SetUniform(uniformName + ".base", pointLight.base);
 	SetUniformFloat(uniformName + ".attenuation.constant", pointLight.attenuation.constant);

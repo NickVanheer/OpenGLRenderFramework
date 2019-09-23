@@ -1,7 +1,5 @@
-#include "Core.h"
+#include "pch.h"
 #include "BasicShader.h"
-
-
 
 BasicShader::BasicShader() : Shader()
 {
@@ -12,7 +10,6 @@ BasicShader::BasicShader() : Shader()
 	AddUniform("transform");
 	AddUniform("color");
 }
-
 
 BasicShader::~BasicShader()
 {

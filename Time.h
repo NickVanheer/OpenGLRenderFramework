@@ -1,14 +1,13 @@
 #pragma once
 
-#include <chrono>
 class Time
 {
 public:
 	Time();
 	~Time();
 
-
-	static double getTime();
+	static long getTime();
+	static long getTimeMili();
 	static double getSecond();
 
 	static long SECOND;

@@ -1,9 +1,5 @@
 #pragma once
-#include <tchar.h>
-#include "Vector3.h"
-#include <vector>
-#include "Vertex.h"
-
+#include "pch.h"
 
 struct Attenuation
 {
@@ -24,8 +20,6 @@ struct Attenuation
 		this->exponent = exponent;
 	}
 };
-
-
 
 struct BaseLight
 {

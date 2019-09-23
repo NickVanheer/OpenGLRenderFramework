@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "BaseGame.h"
 #include "GameObject.h"
 #include "BasicShader.h"

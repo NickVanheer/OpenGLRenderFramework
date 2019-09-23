@@ -1,6 +1,11 @@
+#include "pch.h"
 #include "Main.h"
 #include "CoreEngine.h"
 #include "Game.h"
+
+static const int WINDOW_WIDTH = 1280;
+static const int WINDOW_HEIGHT = 768;
+static const int FRAMES_PER_SECOND = 60;
 
 int main(int argc, char **argv)
 {
@@ -9,6 +14,5 @@ int main(int argc, char **argv)
 	engine->start();
 	
 	delete engine;
-	//cin.get();
 	return 1;
 }

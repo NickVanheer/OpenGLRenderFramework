@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "GameObject.h"
-
-
 
 GameObject::GameObject() : isInitialized(false), transform(Transform())
 {

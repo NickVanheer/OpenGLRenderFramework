@@ -1,7 +1,6 @@
+#include "pch.h"
 #include "Window.h"
-#include <iostream>
 #include "InputManager.h"
-
 
 Window::Window()
 {
@@ -12,7 +11,7 @@ Window::~Window()
 {
 }
 
-void Window::CreateWindow(int width, int height, TCHAR* title)
+void Window::CreateWindow(int width, int height, const char* title)
 {
 	this->width = width;
 	this->height = height;
@@ -37,7 +36,7 @@ void Window::CreateWindow(int width, int height, TCHAR* title)
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
 		//Create window
-		gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+		gWindow = SDL_CreateWindow("Hello", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 		if (gWindow == NULL)
 		{
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -187,17 +186,6 @@ void Window::DrawText(string txt)
 	SDL_DestroyTexture(text);
 	*/
 	
-}
-
-bool Window::LoadImage(SDL_Surface *& image, TCHAR* path)
-{
-	bool result = true;
-
-	image = SDL_LoadBMP(path);
-	if (image == NULL)
-		result = false;
-
-	return result;
 }
 
 bool Window::SetInputManager(std::shared_ptr<InputManager>  inputManager)

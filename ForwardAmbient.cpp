@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "ForwardAmbient.h"
-
 
 Shader* ForwardAmbient::GetInstance()
 {

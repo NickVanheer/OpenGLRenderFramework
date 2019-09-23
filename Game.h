@@ -1,9 +1,10 @@
 #pragma once
-#include "Core.h"
+#include "BaseGame.h"
 
 class Mesh;
 class Material;
 class GameObject;
+class BaseGame;
 
 class Game : public BaseGame
 {
@@ -14,7 +15,6 @@ public:
 	void Input(const GameContext& gameContext);
 	virtual void Update(const GameContext& gameContext) override;
 	void Cleanup();
-	Mesh* getFloor();
 
 private:
 	//box

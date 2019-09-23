@@ -1,7 +1,6 @@
 #pragma once
 #include "Helpers.h"
 
-
 struct Vector2
 {
 public:

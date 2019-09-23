@@ -1,15 +1,13 @@
-#include "Core.h"
-#include <vector>
+#include "pch.h"
+
 #include "ResourceLoader.h"
 #include <fstream>
 #include <sstream>
-#include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION   
 #include "stb_image.h"
 #include "Texture.h"
 #include "Mesh.h"
-
 
 #pragma comment(lib, "assimp-vc140-mt.lib") 
 
@@ -27,12 +25,11 @@ ResourceLoader::ResourceLoader()
 {
 }
 
-
 ResourceLoader::~ResourceLoader()
 {
 }
 
-Texture * ResourceLoader::LoadTexture(string filename)
+Texture * ResourceLoader::LoadTexture(const string& filename)
 {
 	Texture * tex = new Texture(0);
 
@@ -52,7 +49,7 @@ Texture * ResourceLoader::LoadTexture(string filename)
 	*/
 }
 
-string ResourceLoader::LoadShader(string filename)
+string ResourceLoader::LoadShader(const string& filename)
 {
 	ifstream file(filename);
 	string text;
@@ -76,7 +73,7 @@ string ResourceLoader::LoadShader(string filename)
 	return text;
 }
 
-Mesh * ResourceLoader::LoadLegacy(string filename)
+Mesh * ResourceLoader::LoadLegacy(const string& filename)
 {
 	std::ifstream file(filename);
 	Mesh* newMesh = new Mesh();
@@ -195,13 +192,11 @@ Mesh * ResourceLoader::LoadLegacy(string filename)
 		file.close();
 	}
 
-	//TODO http://assimp.sourceforge.net/lib_html/install.html maybe
 	newMesh->AddVertices(Vertexes, indices, true);
-
 	return newMesh;
 }
 
-Mesh * ResourceLoader::LoadAssimp(string filename)
+Mesh * ResourceLoader::LoadAssimp(const string& filename)
 {
 	//assimp loading
 	Assimp::Importer importer;
@@ -252,7 +247,7 @@ Mesh * ResourceLoader::LoadAssimp(string filename)
 	return newMesh;
 }
 
-Mesh * ResourceLoader::LoadModel(string filename)
+Mesh * ResourceLoader::LoadModel(const string& filename)
 {
 	return LoadAssimp(filename);
 }

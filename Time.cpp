@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Time.h"
 
 long Time::SECOND = 10000000; //1000000000L
@@ -12,12 +13,15 @@ Time::~Time()
 }
 
 
-double Time::getTime()
+long Time::getTime()
 {
-	long time = 0;
-	time = std::chrono::system_clock::now().time_since_epoch().count();
+	return std::chrono::system_clock::now().time_since_epoch().count();
+}
 
-	return (double)time / SECOND;
+long Time::getTimeMili()
+{
+	unsigned long milliseconds_since_epoch = std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1);
+	return milliseconds_since_epoch;
 }
 
 

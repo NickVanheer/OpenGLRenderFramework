@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Camera.h"
 
 Vector3 Camera::YAXIS = Vector3(0, 1, 0);
